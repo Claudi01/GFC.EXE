@@ -1,60 +1,99 @@
 using UnityEngine;
+using TMPro;
 
 public class InteracaoPlayer : MonoBehaviour
 {
-    [Header("Configurações do Laser")]
-    public float distanciaAlcancada = 5f; // Aumentei um pouco o alcance por segurança
+    [Header("Configurações")]
+    public float distanciaAlcancada = 5f;
+
+    [Header("Referências")]
+    public ControleDeItens controleItens;
+    public GameObject objetoTextoInteracao;
+    public TextMeshProUGUI componenteTexto;
 
     void Update()
     {
-        // Quando o jogador apertar E
+        VerificarMira();
+
         if (Input.GetKeyDown(KeyCode.E))
         {
-            Debug.Log("Passo 1: O botão E foi apertado!"); // Avisa que o botão funciona
             TentarInteragir();
         }
     }
 
-    void TentarInteragir()
+    void VerificarMira()
     {
-        // Cria o laser saindo do objeto onde este script está e indo para frente
         Ray laser = new Ray(transform.position, transform.forward);
-        RaycastHit acerto; 
+        RaycastHit acerto;
 
-        // Desenha a linha vermelha na aba Scene por 2 segundos
-        Debug.DrawRay(transform.position, transform.forward * distanciaAlcancada, Color.red, 2f);
-
-        // Dispara o laser físico! Se bater em algo...
         if (Physics.Raycast(laser, out acerto, distanciaAlcancada))
         {
-            // Avisa no console o nome exato da coisa em que o laser bateu
-            Debug.Log("Passo 2: O laser bateu no objeto chamado -> " + acerto.collider.gameObject.name); 
-
-            // Checa se o objeto tem a etiqueta (Tag) "Diario"
-            if (acerto.collider.CompareTag("Diario"))
+            if (acerto.collider.CompareTag("Diario")) MostrarTexto("Ler");
+            else if (acerto.collider.CompareTag("Gancho")) MostrarTexto("Pegar Gancho");
+            else if (acerto.collider.CompareTag("PontoEscalada"))
             {
-                Debug.Log("Passo 3: A tag está correta! O alvo é o Diário.");
-                
-                // Pega o script do diário que está dentro daquele objeto
-                MecanicaDiario diario = acerto.collider.GetComponent<MecanicaDiario>();
-                if (diario != null)
+                if (controleItens != null && controleItens.GanchoEquipado())
                 {
-                    Debug.Log("Passo 4: Script MecanicaDiario encontrado. Acionando a UI!");
-                    diario.Interagir();
+                    MostrarTexto("Usar gancho para escalar");
                 }
                 else
                 {
-                    Debug.LogWarning("ERRO: O objeto acertado tem a tag 'Diario', mas NÃO tem o script 'MecanicaDiario' anexado nele!");
+                    MostrarTexto("Está muito alto... Preciso de algo.");
                 }
             }
-            else 
+            else EsconderTexto();
+        }
+        else EsconderTexto();
+    }
+
+    void TentarInteragir()
+    {
+        Ray laser = new Ray(transform.position, transform.forward);
+        RaycastHit acerto;
+
+        if (Physics.Raycast(laser, out acerto, distanciaAlcancada))
+        {
+            if (acerto.collider.CompareTag("Diario"))
             {
-                Debug.Log("Ops: O objeto acertado não tem a tag 'Diario'. A tag dele é: " + acerto.collider.tag);
+                MecanicaDiario diario = acerto.collider.GetComponent<MecanicaDiario>();
+                if (diario != null) diario.Interagir();
+                EsconderTexto();
+            }
+            else if (acerto.collider.CompareTag("Gancho"))
+            {
+                if (controleItens != null)
+                {
+                    controleItens.PegarGancho();
+                    Destroy(acerto.collider.gameObject);
+                    EsconderTexto();
+                }
+            }
+            else if (acerto.collider.CompareTag("PontoEscalada"))
+            {
+                if (controleItens != null && controleItens.GanchoEquipado())
+                {
+                    MecanicaEscalada escalada = acerto.collider.GetComponent<MecanicaEscalada>();
+                    if (escalada != null) escalada.IniciarEscalada();
+                    EsconderTexto();
+                }
             }
         }
-        else
+    }
+
+    void MostrarTexto(string mensagem)
+    {
+        if (componenteTexto != null)
         {
-            Debug.Log("Falha: O laser foi disparado, mas não bateu em nada físico. Chegue mais perto ou ajuste a mira.");
+            componenteTexto.text = mensagem;
+            objetoTextoInteracao.SetActive(true);
+        }
+    }
+
+    void EsconderTexto()
+    {
+        if (objetoTextoInteracao != null)
+        {
+            objetoTextoInteracao.SetActive(false);
         }
     }
 }

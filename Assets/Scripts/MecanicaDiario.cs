@@ -9,12 +9,13 @@ public class MecanicaDiario : MonoBehaviour
     private FaderScript fader;
 
     [Header("Referências do Player")]
-    public MonoBehaviour scriptMovimento; // Aqui você vai arrastar o FirstPersonController
+    public MonoBehaviour scriptMovimento;
 
-    [Header("A Mágica do Bote")]
+    [Header("A Mágica do Bote & Itens")]
     public GameObject boteInteiro;
-    public GameObject boteDestruido; 
-    public AudioSource somImpacto; 
+    public GameObject boteDestruido;
+    public GameObject ganchoEscalada; // Gancho coletável que vai na areia
+    public AudioSource somImpacto;
 
     private bool lendo = false;
     private bool jaCaiu = false;
@@ -31,18 +32,16 @@ public class MecanicaDiario : MonoBehaviour
         else StartCoroutine(FecharProcesso());
     }
 
-    // Função para ligar/desligar o controle do jogador e o mouse
     void AlternarControlePlayer(bool estado)
     {
         if (scriptMovimento != null) scriptMovimento.enabled = estado;
 
-        // Libera ou trava o cursor do mouse
-        if (estado) // Se o jogador voltou a andar
+        if (estado)
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
-        else // Se o jogador está lendo
+        else
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
@@ -52,11 +51,9 @@ public class MecanicaDiario : MonoBehaviour
     IEnumerator AbrirProcesso()
     {
         lendo = true;
-        AlternarControlePlayer(false); // TRAVA O PLAYER AQUI
-        
+        AlternarControlePlayer(false);
         telaPreta.SetActive(true);
-        yield return StartCoroutine(fader.FazerFade(true)); 
-        
+        yield return StartCoroutine(fader.FazerFade(true));
         telaDiario.SetActive(true);
         yield return StartCoroutine(fader.FazerFade(false));
     }
@@ -64,21 +61,23 @@ public class MecanicaDiario : MonoBehaviour
     IEnumerator FecharProcesso()
     {
         yield return StartCoroutine(fader.FazerFade(true));
-        
         telaDiario.SetActive(false);
-        
+
         if (!jaCaiu)
         {
-            if (boteInteiro != null) boteInteiro.SetActive(false); 
+            if (boteInteiro != null) boteInteiro.SetActive(false);
             if (boteDestruido != null) boteDestruido.SetActive(true);
-            if (somImpacto != null) somImpacto.Play(); 
+            
+            // Liga o gancho no exato momento em que o bote quebra!
+            if (ganchoEscalada != null) ganchoEscalada.SetActive(true);
+            
+            if (somImpacto != null) somImpacto.Play();
             jaCaiu = true;
         }
 
         yield return StartCoroutine(fader.FazerFade(false));
         telaPreta.SetActive(false);
-        
-        AlternarControlePlayer(true); // LIBERA O PLAYER AQUI
+        AlternarControlePlayer(true);
         lendo = false;
     }
 }
