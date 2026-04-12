@@ -32,14 +32,12 @@ public class InteracaoPlayer : MonoBehaviour
             else if (acerto.collider.CompareTag("Gancho")) MostrarTexto("Pegar Gancho");
             else if (acerto.collider.CompareTag("PontoEscalada"))
             {
-                if (controleItens != null && controleItens.GanchoEquipado())
-                {
-                    MostrarTexto("Usar gancho para escalar");
-                }
-                else
-                {
-                    MostrarTexto("Está muito alto... Preciso de algo.");
-                }
+                if (controleItens != null && controleItens.GanchoEquipado()) MostrarTexto("Usar gancho para escalar");
+                else MostrarTexto("Está muito alto... Preciso de algo.");
+            }
+            else if (acerto.collider.CompareTag("Portao"))
+            {
+                MostrarTexto("Não posso abandonar a missão agora.");
             }
             else EsconderTexto();
         }
@@ -89,7 +87,8 @@ public class InteracaoPlayer : MonoBehaviour
         }
     }
 
-    void EsconderTexto()
+    // Agora é PUBLIC para o Diário poder sumir com o texto à força
+    public void EsconderTexto()
     {
         if (objetoTextoInteracao != null)
         {

@@ -10,31 +10,55 @@ public class MecanicaDiario : MonoBehaviour
 
     [Header("Referências do Player")]
     public MonoBehaviour scriptMovimento;
+    public InteracaoPlayer scriptInteracao;
 
     [Header("A Mágica do Bote & Itens")]
     public GameObject boteInteiro;
     public GameObject boteDestruido;
-    public GameObject ganchoEscalada; // Gancho coletável que vai na areia
+    public GameObject ganchoEscalada;
     public AudioSource somImpacto;
 
     private bool lendo = false;
     private bool jaCaiu = false;
+    private bool emTransicao = false;
 
     void Start()
     {
         if (telaPreta != null) fader = telaPreta.GetComponent<FaderScript>();
+        
+        // NOVO: A linha mágica anti-bug. Se o campo estiver vazio no Inspector, 
+        // o código procura o laser do Player sozinho pela cena e conecta!
+        if (scriptInteracao == null)
+        {
+            scriptInteracao = Object.FindFirstObjectByType<InteracaoPlayer>();
+        }
+    }
+
+    void Update()
+    {
+        if (lendo && !emTransicao && Input.GetKeyDown(KeyCode.E))
+        {
+            StartCoroutine(FecharProcesso());
+        }
     }
 
     public void Interagir()
     {
-        if (fader == null) return;
+        if (fader == null || emTransicao) return;
+        
         if (!lendo) StartCoroutine(AbrirProcesso());
-        else StartCoroutine(FecharProcesso());
     }
 
     void AlternarControlePlayer(bool estado)
     {
         if (scriptMovimento != null) scriptMovimento.enabled = estado;
+
+        // É aqui que ele desliga o laser e some com o texto!
+        if (scriptInteracao != null)
+        {
+            if (!estado) scriptInteracao.EsconderTexto();
+            scriptInteracao.enabled = estado; 
+        }
 
         if (estado)
         {
@@ -50,16 +74,22 @@ public class MecanicaDiario : MonoBehaviour
 
     IEnumerator AbrirProcesso()
     {
+        emTransicao = true;
         lendo = true;
-        AlternarControlePlayer(false);
+        AlternarControlePlayer(false); 
+        
         telaPreta.SetActive(true);
         yield return StartCoroutine(fader.FazerFade(true));
         telaDiario.SetActive(true);
         yield return StartCoroutine(fader.FazerFade(false));
+        
+        emTransicao = false;
     }
 
     IEnumerator FecharProcesso()
     {
+        emTransicao = true;
+        
         yield return StartCoroutine(fader.FazerFade(true));
         telaDiario.SetActive(false);
 
@@ -68,7 +98,6 @@ public class MecanicaDiario : MonoBehaviour
             if (boteInteiro != null) boteInteiro.SetActive(false);
             if (boteDestruido != null) boteDestruido.SetActive(true);
             
-            // Liga o gancho no exato momento em que o bote quebra!
             if (ganchoEscalada != null) ganchoEscalada.SetActive(true);
             
             if (somImpacto != null) somImpacto.Play();
@@ -77,7 +106,9 @@ public class MecanicaDiario : MonoBehaviour
 
         yield return StartCoroutine(fader.FazerFade(false));
         telaPreta.SetActive(false);
-        AlternarControlePlayer(true);
+        
+        AlternarControlePlayer(true); 
         lendo = false;
+        emTransicao = false;
     }
 }
