@@ -7,6 +7,9 @@ public class FirstPersonController : MonoBehaviour
     public float walkSpeed = 5.0f;
     public float gravity = -9.81f;
 
+    [Header("Jump Settings")]
+    public float jumpHeight = 1.5f;
+
     [Header("Camera Settings")]
     public Camera playerCamera;
     public float lookSpeed = 2.0f;
@@ -14,46 +17,86 @@ public class FirstPersonController : MonoBehaviour
 
     private CharacterController characterController;
     private Vector3 moveDirection = Vector3.zero;
-    private float rotationX = 0;
+    private float rotationX = 0f;
 
     void Start()
     {
         characterController = GetComponent<CharacterController>();
-        
-        // Trava o mouse no centro da tela e esconde o cursor (clique ESC para soltar no teste)
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
     void Update()
     {
-        // --- 1. OLHAR (CÂMERA) ---
-        // Pega a movimentação do mouse (Eixos X e Y)
-        rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
-        rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit); // Limita para não dar "cambalhota" com o pescoço
-        
-        playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0); // Gira a câmera para cima/baixo
-        transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0); // Gira o corpo do player para os lados
+        // --- 1. OLHAR COM A CÂMERA ---
 
-        // --- 2. ANDAR ---
-        // Verifica se o personagem está encostando no chão
-        if (characterController.isGrounded)
+        rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
+        rotationX = Mathf.Clamp(
+            rotationX,
+            -lookXLimit,
+            lookXLimit
+        );
+
+        playerCamera.transform.localRotation =
+            Quaternion.Euler(rotationX, 0f, 0f);
+
+        transform.rotation *= Quaternion.Euler(
+            0f,
+            Input.GetAxis("Mouse X") * lookSpeed,
+            0f
+        );
+
+        // --- 2. VERIFICAR SE ESTÁ NO CHÃO ---
+
+        bool estaNoChao = characterController.isGrounded;
+
+        // Mantém o Character Controller encostado no chão.
+        if (estaNoChao && moveDirection.y < 0f)
         {
-            // Pega o input do teclado (WASD ou Setas)
-            Vector3 forward = transform.TransformDirection(Vector3.forward);
-            Vector3 right = transform.TransformDirection(Vector3.right);
-            
-            float curSpeedX = walkSpeed * Input.GetAxis("Vertical");
-            float curSpeedY = walkSpeed * Input.GetAxis("Horizontal");
-            
-            moveDirection = (forward * curSpeedX) + (right * curSpeedY);
+            moveDirection.y = -2f;
         }
 
-        // --- 3. GRAVIDADE ---
-        // Aplica a gravidade constantemente puxando para baixo
+        // --- 3. MOVIMENTO COM WASD ---
+
+        Vector3 forward =
+            transform.TransformDirection(Vector3.forward);
+
+        Vector3 right =
+            transform.TransformDirection(Vector3.right);
+
+        float movimentoVertical =
+            Input.GetAxis("Vertical");
+
+        float movimentoHorizontal =
+            Input.GetAxis("Horizontal");
+
+        Vector3 movimentoNoChao =
+            (forward * movimentoVertical) +
+            (right * movimentoHorizontal);
+
+        movimentoNoChao *= walkSpeed;
+
+        moveDirection.x = movimentoNoChao.x;
+        moveDirection.z = movimentoNoChao.z;
+
+        // --- 4. PULO ---
+
+        if (estaNoChao && Input.GetKeyDown(KeyCode.Space))
+        {
+            moveDirection.y = Mathf.Sqrt(
+                jumpHeight * -2f * gravity
+            );
+        }
+
+        // --- 5. GRAVIDADE ---
+
         moveDirection.y += gravity * Time.deltaTime;
 
-        // --- 4. APLICAR MOVIMENTO ---
-        characterController.Move(moveDirection * Time.deltaTime);
+        // --- 6. APLICAR MOVIMENTO ---
+
+        characterController.Move(
+            moveDirection * Time.deltaTime
+        );
     }
 }
