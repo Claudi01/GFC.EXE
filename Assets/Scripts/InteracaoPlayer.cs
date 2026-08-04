@@ -11,8 +11,20 @@ public class InteracaoPlayer : MonoBehaviour
     public GameObject objetoTextoInteracao;
     public TextMeshProUGUI componenteTexto;
 
+    void Awake()
+    {
+        // A referencia era configurada somente em uma das cenas originais.
+        if (controleItens == null) controleItens = FindFirstObjectByType<ControleDeItens>();
+    }
+
     void Update()
     {
+        if (SistemaInventario.Instancia != null && SistemaInventario.Instancia.Aberto)
+        {
+            EsconderTexto();
+            return;
+        }
+
         VerificarMira();
 
         if (Input.GetKeyDown(KeyCode.E))
@@ -30,6 +42,12 @@ public class InteracaoPlayer : MonoBehaviour
         {
             if (acerto.collider.CompareTag("Diario")) MostrarTexto("Ler");
             else if (acerto.collider.CompareTag("Gancho")) MostrarTexto("Pegar Gancho");
+            else if (acerto.collider.GetComponentInParent<ItemPickup>() != null)
+            {
+                ItemPickup pickup = acerto.collider.GetComponentInParent<ItemPickup>();
+                if (pickup.item != null) MostrarTexto("Pegar " + pickup.item.nome);
+                else EsconderTexto();
+            }
             else if (acerto.collider.CompareTag("PontoEscalada"))
             {
                 if (controleItens != null && controleItens.GanchoEquipado()) MostrarTexto("Usar gancho para escalar");
@@ -53,7 +71,7 @@ public class InteracaoPlayer : MonoBehaviour
         {
             if (acerto.collider.CompareTag("Diario"))
             {
-                MecanicaDiario diario = acerto.collider.GetComponent<MecanicaDiario>();
+                MecanicaDiario diario = acerto.collider.GetComponentInParent<MecanicaDiario>();
                 if (diario != null) diario.Interagir();
                 EsconderTexto();
             }
@@ -61,16 +79,29 @@ public class InteracaoPlayer : MonoBehaviour
             {
                 if (controleItens != null)
                 {
-                    controleItens.PegarGancho();
-                    Destroy(acerto.collider.gameObject);
+                    if (controleItens.TryPegarGancho())
+                    {
+                        Destroy(acerto.collider.gameObject);
+                        EsconderTexto();
+                    }
+                    else MostrarTexto("Inventário cheio");
+                }
+            }
+            else if (acerto.collider.GetComponentInParent<ItemPickup>() != null)
+            {
+                ItemPickup pickup = acerto.collider.GetComponentInParent<ItemPickup>();
+                if (pickup.TentarPegar())
+                {
+                    Destroy(pickup.gameObject);
                     EsconderTexto();
                 }
+                else MostrarTexto("InventÃ¡rio cheio");
             }
             else if (acerto.collider.CompareTag("PontoEscalada"))
             {
                 if (controleItens != null && controleItens.GanchoEquipado())
                 {
-                    MecanicaEscalada escalada = acerto.collider.GetComponent<MecanicaEscalada>();
+                    MecanicaEscalada escalada = acerto.collider.GetComponentInParent<MecanicaEscalada>();
                     if (escalada != null) escalada.IniciarEscalada();
                     EsconderTexto();
                 }
@@ -83,7 +114,7 @@ public class InteracaoPlayer : MonoBehaviour
         if (componenteTexto != null)
         {
             componenteTexto.text = mensagem;
-            objetoTextoInteracao.SetActive(true);
+            if (objetoTextoInteracao != null) objetoTextoInteracao.SetActive(true);
         }
     }
 

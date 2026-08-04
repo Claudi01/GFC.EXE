@@ -13,12 +13,23 @@ public class ControleDeItens : MonoBehaviour
 
     void Start()
     {
-        lanterna.SetActive(true);
-        if (ganchoNaMao != null) ganchoNaMao.SetActive(false);
+        // O estado visual e restaurado pelo item equipado persistente; nao force lanterna em toda cena.
+        bool gancho = SistemaInventario.Instancia != null && SistemaInventario.Instancia.ItemEquipadoId == "gancho" && possuiGancho;
+        if (lanterna != null) lanterna.SetActive(!gancho);
+        if (ganchoNaMao != null) ganchoNaMao.SetActive(gancho);
+        itemEquipado = gancho ? 1 : 0;
+    }
+
+    void Awake()
+    {
+        // Mantem a compatibilidade com saves/cenas antigas e restaura o equipamento ao trocar de cena.
+        possuiGancho = SistemaInventario.Instancia != null && SistemaInventario.Instancia.Possui("gancho");
     }
 
     void Update()
     {
+        if (SistemaInventario.Instancia != null && SistemaInventario.Instancia.Aberto) return;
+
         if (possuiGancho && !trocando)
         {
             float scroll = Input.GetAxis("Mouse ScrollWheel");
@@ -31,12 +42,21 @@ public class ControleDeItens : MonoBehaviour
 
     public void PegarGancho()
     {
+        if (SistemaInventario.Instancia != null && !SistemaInventario.Instancia.Possui("gancho") &&
+            !SistemaInventario.Instancia.TentarAdicionar("gancho", "Gancho", 2, 1)) return;
         possuiGancho = true;
         if (!trocando)
         {
             StartCoroutine(FazerTransicao(1));
         }
         Debug.Log("Item adicionado ao inventário!");
+    }
+
+    public bool TryPegarGancho()
+    {
+        if (SistemaInventario.Instancia == null) return false;
+        if (!SistemaInventario.Instancia.Possui("gancho") && !SistemaInventario.Instancia.TentarAdicionar("gancho", "Gancho", 2, 1)) return false;
+        PegarGancho(); return true;
     }
 
     IEnumerator AnimacaoDeTroca()
@@ -77,7 +97,17 @@ public class ControleDeItens : MonoBehaviour
 
         entrando.transform.localPosition = posOriginalEntrando;
         itemEquipado = alvoItem;
+        if (SistemaInventario.Instancia != null)
+            SistemaInventario.Instancia.Selecionar(alvoItem == 1 ? EncontrarItem("gancho") : EncontrarItem("lanterna"));
         trocando = false;
+    }
+
+    private InventarioGrade.Item EncontrarItem(string id)
+    {
+        if (SistemaInventario.Instancia == null) return null;
+        foreach (InventarioGrade.Item item in SistemaInventario.Instancia.Grade.Itens)
+            if (item.id == id) return item;
+        return null;
     }
 
     // A mágica nova: avisa o sistema se o jogador está segurando o gancho agora

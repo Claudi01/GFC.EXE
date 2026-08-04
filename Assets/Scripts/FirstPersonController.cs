@@ -27,6 +27,8 @@ public class FirstPersonController : MonoBehaviour
 
     void Update()
     {
+        if (SistemaInventario.Instancia != null && SistemaInventario.Instancia.Aberto)
+            return;
         // --- 1. OLHAR (CÂMERA) ---
         // Pega a movimentação do mouse (Eixos X e Y)
         rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
