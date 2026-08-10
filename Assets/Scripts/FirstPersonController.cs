@@ -29,14 +29,12 @@ public class FirstPersonController : MonoBehaviour
 
     void Update()
     {
-        // --- 1. OLHAR COM A CÂMERA ---
+        if (SistemaInventario.Instancia != null && SistemaInventario.Instancia.Aberto)
+            return;
 
+        // --- 1. LOOK WITH THE CAMERA ---
         rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
-        rotationX = Mathf.Clamp(
-            rotationX,
-            -lookXLimit,
-            lookXLimit
-        );
+        rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
 
         playerCamera.transform.localRotation =
             Quaternion.Euler(rotationX, 0f, 0f);
@@ -47,18 +45,16 @@ public class FirstPersonController : MonoBehaviour
             0f
         );
 
-        // --- 2. VERIFICAR SE ESTÁ NO CHÃO ---
-
+        // --- 2. CHECK WHETHER THE PLAYER IS ON THE GROUND ---
         bool estaNoChao = characterController.isGrounded;
 
-        // Mantém o Character Controller encostado no chão.
+        // Keep the Character Controller touching the ground.
         if (estaNoChao && moveDirection.y < 0f)
         {
             moveDirection.y = -2f;
         }
 
-        // --- 3. MOVIMENTO COM WASD ---
-
+        // --- 3. WASD MOVEMENT ---
         Vector3 forward =
             transform.TransformDirection(Vector3.forward);
 
@@ -80,8 +76,7 @@ public class FirstPersonController : MonoBehaviour
         moveDirection.x = movimentoNoChao.x;
         moveDirection.z = movimentoNoChao.z;
 
-        // --- 4. PULO ---
-
+        // --- 4. JUMP ---
         if (estaNoChao && Input.GetKeyDown(KeyCode.Space))
         {
             moveDirection.y = Mathf.Sqrt(
@@ -89,12 +84,10 @@ public class FirstPersonController : MonoBehaviour
             );
         }
 
-        // --- 5. GRAVIDADE ---
-
+        // --- 5. GRAVITY ---
         moveDirection.y += gravity * Time.deltaTime;
 
-        // --- 6. APLICAR MOVIMENTO ---
-
+        // --- 6. APPLY MOVEMENT ---
         characterController.Move(
             moveDirection * Time.deltaTime
         );
