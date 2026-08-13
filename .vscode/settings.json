@@ -67,5 +67,5 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "gfc.slnx"
+    "dotnet.defaultSolution": "GFC.EXE.slnx"
 }
