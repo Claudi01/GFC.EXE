@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 public class MecanicaEscalada : MonoBehaviour
 {
     [Header("Configuração de Cena")]
-    public string nomeProximaCena = "1 parte - navio"; // Nome exato do seu print
+    public string nomeProximaCena = "Aréa de Carga";
 
     [Header("Efeitos")]
     public FaderScript fader; // Arraste a UI_Preta aqui
@@ -17,9 +17,12 @@ public class MecanicaEscalada : MonoBehaviour
 
     IEnumerator ProcessoEscalada()
     {
-        fader.gameObject.SetActive(true);
-        yield return StartCoroutine(fader.FazerFade(true)); // Escurece tudo
+        if (fader != null)
+        {
+            fader.gameObject.SetActive(true);
+            yield return StartCoroutine(fader.FazerFade(true));
+        }
         
-        SceneManager.LoadScene(nomeProximaCena); // Teleporta o player
+        SceneManager.LoadScene(nomeProximaCena);
     }
 }

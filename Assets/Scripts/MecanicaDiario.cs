@@ -6,10 +6,12 @@ public class MecanicaDiario : MonoBehaviour
     [Header("Interface UI")]
     public GameObject telaDiario;
     public GameObject telaPreta;
+    public GameObject textoUIInteracao; // NOVO: A marreta da UI
     private FaderScript fader;
 
     [Header("Referências do Player")]
-    public MonoBehaviour scriptMovimento;
+    public MonoBehaviour scriptMovimento; 
+    public MonoBehaviour scriptOlharCamera; // NOVO: A marreta do Mouse
     public InteracaoPlayer scriptInteracao;
 
     [Header("A Mágica do Bote & Itens")]
@@ -26,8 +28,11 @@ public class MecanicaDiario : MonoBehaviour
     {
         if (telaPreta != null) fader = telaPreta.GetComponent<FaderScript>();
         
-        // NOVO: A linha mágica anti-bug. Se o campo estiver vazio no Inspector, 
-        // o código procura o laser do Player sozinho pela cena e conecta!
+        if (scriptMovimento == null)
+        {
+            scriptMovimento = Object.FindFirstObjectByType<FirstPersonController>();
+        }
+
         if (scriptInteracao == null)
         {
             scriptInteracao = Object.FindFirstObjectByType<InteracaoPlayer>();
@@ -51,15 +56,19 @@ public class MecanicaDiario : MonoBehaviour
 
     void AlternarControlePlayer(bool estado)
     {
+        // 1. Desliga o movimento do corpo
         if (scriptMovimento != null) scriptMovimento.enabled = estado;
 
-        // É aqui que ele desliga o laser e some com o texto!
-        if (scriptInteracao != null)
-        {
-            if (!estado) scriptInteracao.EsconderTexto();
-            scriptInteracao.enabled = estado; 
-        }
+        // 2. Desliga o giro da câmera na força bruta
+        if (scriptOlharCamera != null) scriptOlharCamera.enabled = estado;
 
+        // 3. Desliga o sistema de interação invisível
+        if (scriptInteracao != null) scriptInteracao.enabled = estado; 
+
+        // 4. Apaga o texto "Ler" direto na raiz
+        if (textoUIInteracao != null) textoUIInteracao.SetActive(estado);
+
+        // 5. Solta o mouse para clicar na tela se precisar (ou só trava)
         if (estado)
         {
             Cursor.lockState = CursorLockMode.Locked;
