@@ -74,6 +74,11 @@ public sealed class InventarioGrade
         return itens.Exists(i => i.id == id);
     }
 
+    public bool Remover(Item item)
+    {
+        return item != null && itens.Remove(item);
+    }
+
     private bool Cabe(Item candidato, Item ignorar)
     {
         if (candidato.x < 0 || candidato.y < 0 || candidato.x + candidato.LarguraAtual > colunas || candidato.y + candidato.AlturaAtual > linhas) return false;

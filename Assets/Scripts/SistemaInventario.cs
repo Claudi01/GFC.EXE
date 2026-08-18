@@ -19,6 +19,8 @@ public class SistemaInventario : MonoBehaviour
     private InventarioItemUI itemArrastado;
     private const float TamanhoCelula = 52f;
     private const string ChaveSave = "inventario.grade.v1";
+    // Enquanto nao existe menu de continuar, cada execucao inicia uma nova partida.
+    private const bool LimparSaveAoIniciarAplicacao = true;
     private Text detalhes;
     [Serializable] private class SaveData { public string equipado; public List<SaveItem> itens = new List<SaveItem>(); }
     [Serializable] private class SaveItem { public string id, nome; public int largura, altura, x, y; public bool rotacionado, podeRotacionar; }
@@ -28,7 +30,10 @@ public class SistemaInventario : MonoBehaviour
     private static void CriarAutomaticamente()
     {
         if (FindFirstObjectByType<SistemaInventario>() != null) return;
-        new GameObject("SistemaInventario").AddComponent<SistemaInventario>();
+
+        SistemaInventario sistema = new GameObject("SistemaInventario").AddComponent<SistemaInventario>();
+        if (LimparSaveAoIniciarAplicacao)
+            sistema.NovaPartida();
     }
 
     private void Awake()
@@ -160,6 +165,64 @@ public class SistemaInventario : MonoBehaviour
         return aceito;
     }
     public bool Possui(string id) { return Grade != null && Grade.Contem(id); }
+
+    public bool RemoverItem(string id)
+    {
+        if (Grade == null || string.IsNullOrWhiteSpace(id)) return false;
+
+        InventarioGrade.Item item = null;
+        foreach (InventarioGrade.Item candidato in Grade.Itens)
+        {
+            if (string.Equals(candidato.id, id, StringComparison.OrdinalIgnoreCase))
+            {
+                item = candidato;
+                break;
+            }
+        }
+
+        if (item == null || !Grade.Remover(item)) return false;
+
+        if (Selecionado == item)
+            Selecionado = null;
+
+        if (string.Equals(ItemEquipadoId, id, StringComparison.OrdinalIgnoreCase))
+            ItemEquipadoId = Possui("lanterna") ? "lanterna" : string.Empty;
+
+        Salvar();
+        AtualizarUI();
+        return true;
+    }
+
+    [ContextMenu("Nova partida (apagar save)")]
+    public void NovaPartida()
+    {
+        if (itemArrastado != null)
+        {
+            itemArrastado.CancelarArraste();
+            itemArrastado = null;
+        }
+
+        if (canvas != null)
+            canvas.gameObject.SetActive(false);
+
+        Aberto = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        foreach (InventarioItemUI view in views.Values)
+            if (view != null) Destroy(view.gameObject);
+        views.Clear();
+
+        PlayerPrefs.DeleteKey(ChaveSave);
+        PlayerPrefs.DeleteKey(MecanicaEscalada.ChaveGanchoUsado);
+        PlayerPrefs.Save();
+
+        Grade = new InventarioGrade(10, 6);
+        ItemEquipadoId = "lanterna";
+        Selecionado = null;
+        TentarAdicionar("lanterna", "Lanterna", 1, 2, true);
+    }
+
     public void Selecionar(InventarioGrade.Item item)
     {
         Selecionado = item;

@@ -63,22 +63,18 @@ public class MecanicaDiario : MonoBehaviour
         if (scriptOlharCamera != null) scriptOlharCamera.enabled = estado;
 
         // 3. Desliga o sistema de interação invisível
-        if (scriptInteracao != null) scriptInteracao.enabled = estado; 
+        if (scriptInteracao != null)
+        {
+            scriptInteracao.EsconderTexto();
+            scriptInteracao.enabled = estado;
+        }
 
         // 4. Apaga o texto "Ler" direto na raiz
         if (textoUIInteracao != null) textoUIInteracao.SetActive(estado);
 
         // 5. Solta o mouse para clicar na tela se precisar (ou só trava)
-        if (estado)
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
-        else
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     IEnumerator AbrirProcesso()
