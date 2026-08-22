@@ -1,21 +1,21 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
+[RequireComponent(typeof(TransicaoCena))]
 public class MecanicaEscalada : MonoBehaviour
 {
     public const string ChaveGanchoUsado = "gfc.progresso.gancho.usado";
 
     private bool transicaoIniciada;
-
-    [Header("Configuração de Cena")]
-    public string nomeProximaCena = "Aréa de Carga";
+    private TransicaoCena transicaoCena;
 
     [Header("Item consumido")]
     public string idItemConsumido = "gancho";
 
-    [Header("Efeitos")]
-    public FaderScript fader; // Arraste a UI_Preta aqui
+    private void Awake()
+    {
+        transicaoCena = GetComponent<TransicaoCena>();
+    }
 
     public void IniciarEscalada()
     {
@@ -38,21 +38,22 @@ public class MecanicaEscalada : MonoBehaviour
 
     IEnumerator ProcessoEscalada()
     {
-        if (string.IsNullOrWhiteSpace(nomeProximaCena))
+        if (transicaoCena == null)
         {
-            FalharEscalada("A cena de destino da escalada não foi configurada.");
+            FalharEscalada("O componente de transicao de cena nao esta disponivel.");
             yield break;
         }
 
-        if (!Application.CanStreamedLevelBeLoaded(nomeProximaCena))
+        string mensagemTransicao;
+        if (!transicaoCena.PodeIniciar(out mensagemTransicao))
         {
-            FalharEscalada("A cena de destino não está disponível na Build Settings: " + nomeProximaCena);
+            FalharEscalada(mensagemTransicao);
             yield break;
         }
 
         if (string.IsNullOrWhiteSpace(idItemConsumido))
         {
-            FalharEscalada("O ID do item necessário para a escalada não foi configurado.");
+            FalharEscalada("O ID do item necessario para a escalada nao foi configurado.");
             yield break;
         }
 
@@ -76,14 +77,7 @@ public class MecanicaEscalada : MonoBehaviour
         }
 
         EstadoMundo.MarcarConcluido(ChaveGanchoUsado);
-
-        if (fader != null)
-        {
-            fader.gameObject.SetActive(true);
-            yield return StartCoroutine(fader.FazerFade(true));
-        }
-        
-        SceneManager.LoadScene(nomeProximaCena);
+        transicaoCena.IniciarTransicao();
     }
 
     private void FalharEscalada(string mensagem)

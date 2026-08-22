@@ -944,6 +944,7 @@ GameObject:
   - component: {fileID: 107660261}
   - component: {fileID: 107660260}
   - component: {fileID: 107660259}
+  - component: {fileID: 1097743620}
   m_Layer: 0
   m_Name: Gatilho_Escalada
   m_TagString: PontoEscalada
@@ -963,8 +964,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5df1968d12692fc499444c0c04694706, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MecanicaEscalada
-  nomeProximaCena: "Ar\xE9a de Carga"
   idItemConsumido: gancho
+--- !u!114 &1097743620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 107660258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21393d573f4342018a60aabc24fdefe5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TransicaoCena
+  nomeCenaDestino: "Ar\xE9a de Carga"
+  idEntradaDestino: Entrada_AreaCarga
   fader: {fileID: 191067315}
 --- !u!65 &107660260
 BoxCollider:

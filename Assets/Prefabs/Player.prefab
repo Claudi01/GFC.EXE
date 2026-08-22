@@ -419,6 +419,7 @@ GameObject:
   - component: {fileID: 6570075603239608926}
   - component: {fileID: 6555130066389799823}
   - component: {fileID: 2339738239807500683}
+  - component: {fileID: 1847382916}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -581,6 +582,18 @@ MonoBehaviour:
   ganchoNaMao: {fileID: 5006115736158904374}
   peDeCabraNaMao: {fileID: 1998520956142636673}
   itensAdicionais: []
+--- !u!114 &1847382916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9002773722751999102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fc5f1f4f6f143ae8ba8e1a20119a3ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PosicionadorPlayerCena
 --- !u!1001 &1692585903987586000
 PrefabInstance:
   m_ObjectHideFlags: 0

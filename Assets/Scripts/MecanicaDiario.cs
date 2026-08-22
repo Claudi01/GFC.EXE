@@ -20,6 +20,10 @@ public class MecanicaDiario : MonoBehaviour
     public GameObject ganchoEscalada;
     public AudioSource somImpacto;
 
+    [Header("Persistencia do evento")]
+    [Tooltip("Chave unica do evento deste diario no progresso da partida.")]
+    public string chaveEvento = "gfc.evento.diario.bote";
+
     private bool lendo = false;
     private bool jaCaiu = false;
     private bool emTransicao = false;
@@ -27,6 +31,10 @@ public class MecanicaDiario : MonoBehaviour
     void Start()
     {
         if (telaPreta != null) fader = telaPreta.GetComponent<FaderScript>();
+
+        jaCaiu = EstadoMundo.EstaConcluido(chaveEvento);
+        if (jaCaiu)
+            AplicarEstadoBote();
         
         if (scriptMovimento == null)
         {
@@ -82,6 +90,13 @@ public class MecanicaDiario : MonoBehaviour
         Cursor.visible = false;
     }
 
+    private void AplicarEstadoBote()
+    {
+        if (boteInteiro != null) boteInteiro.SetActive(false);
+        if (boteDestruido != null) boteDestruido.SetActive(true);
+        if (ganchoEscalada != null) ganchoEscalada.SetActive(true);
+    }
+
     IEnumerator AbrirProcesso()
     {
         emTransicao = true;
@@ -105,12 +120,9 @@ public class MecanicaDiario : MonoBehaviour
 
         if (!jaCaiu)
         {
-            if (boteInteiro != null) boteInteiro.SetActive(false);
-            if (boteDestruido != null) boteDestruido.SetActive(true);
-            
-            if (ganchoEscalada != null) ganchoEscalada.SetActive(true);
-            
+            AplicarEstadoBote();
             if (somImpacto != null) somImpacto.Play();
+            EstadoMundo.MarcarConcluido(chaveEvento);
             jaCaiu = true;
         }
 

@@ -86,6 +86,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MecanicaDiario
   telaDiario: {fileID: 0}
   telaPreta: {fileID: 0}
+  chaveEvento: gfc.evento.diario.bote
   scriptMovimento: {fileID: 0}
   scriptInteracao: {fileID: 0}
   boteInteiro: {fileID: 0}

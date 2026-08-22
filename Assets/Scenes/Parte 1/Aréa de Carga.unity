@@ -29383,6 +29383,51 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 6.0102577, y: 2.6056266, z: 2.4563715}
   m_Center: {x: -0.016931534, y: 1.3077743, z: 0.017419934}
+--- !u!1 &1029332619
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 968495981}
+  - component: {fileID: 1012760309}
+  m_Layer: 0
+  m_Name: Entrada_AreaCarga
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &968495981
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1029332619}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.69903976, z: -0, w: -0.7150828}
+  m_LocalPosition: {x: 15.65, y: -3.25, z: 5.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 271.3, z: 0}
+--- !u!114 &1012760309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1029332619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 472ea74de4794c62b68f7a0c44924496, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PontoEntradaCena
+  idEntrada: Entrada_AreaCarga
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -29400,3 +29445,4 @@ SceneRoots:
   - {fileID: 1169459927}
   - {fileID: 243576006}
   - {fileID: 2010613186}
+  - {fileID: 1029332619}
