@@ -87,7 +87,7 @@ public class ControleDeItens : MonoBehaviour
 
     private void Update()
     {
-        if (SistemaInventario.Instancia != null && SistemaInventario.Instancia.Aberto)
+        if (GameplayState.Instancia != null && GameplayState.Instancia.EstaBloqueado)
             return;
 
         if (trocando || catalogo.Count <= 1)

@@ -142,12 +142,24 @@ public class SistemaInventario : MonoBehaviour
 
     public void Alternar()
     {
+        if (!Aberto && GameplayState.Instancia != null &&
+            !GameplayState.Instancia.PodeAssumirControle(GameplayBlockReason.Inventario))
+            return;
+
         if (Aberto && itemArrastado != null)
         {
             itemArrastado.CancelarArraste();
             itemArrastado = null;
         }
         Aberto = !Aberto;
+        if (GameplayState.Instancia != null)
+        {
+            if (Aberto)
+                GameplayState.Instancia.Bloquear(GameplayBlockReason.Inventario);
+            else
+                GameplayState.Instancia.Liberar(GameplayBlockReason.Inventario);
+        }
+
         canvas.gameObject.SetActive(Aberto);
         Cursor.lockState = Aberto ? CursorLockMode.None : CursorLockMode.Locked;
         Cursor.visible = Aberto;
@@ -206,6 +218,9 @@ public class SistemaInventario : MonoBehaviour
             canvas.gameObject.SetActive(false);
 
         Aberto = false;
+        if (GameplayState.Instancia != null)
+            GameplayState.Instancia.Liberar(GameplayBlockReason.Inventario);
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
@@ -215,6 +230,7 @@ public class SistemaInventario : MonoBehaviour
 
         PlayerPrefs.DeleteKey(ChaveSave);
         PlayerPrefs.DeleteKey(MecanicaEscalada.ChaveGanchoUsado);
+        EstadoMundo.LimparTudo();
         PlayerPrefs.Save();
 
         Grade = new InventarioGrade(10, 6);

@@ -17,7 +17,17 @@ public class ItemPickup : MonoBehaviour
     [Min(1)] public int alturaManual = 1;
     public bool podeRotacionarManual = true;
 
+    [Header("Persistencia do mundo")]
+    [Tooltip("Chave unica opcional. Preenchida, impede que este pickup reapareca depois de coletado.")]
+    public string chaveColeta = "";
+
     private bool coletado;
+
+    private void Awake()
+    {
+        if (EstadoMundo.EstaConcluido(chaveColeta) || JaPossui)
+            gameObject.SetActive(false);
+    }
 
     public string Id
     {
@@ -29,21 +39,35 @@ public class ItemPickup : MonoBehaviour
         get { return item != null ? item.nome : nomeManual; }
     }
 
+    public bool JaPossui
+    {
+        get
+        {
+            return SistemaInventario.Instancia != null &&
+                   SistemaInventario.Instancia.Possui(Id);
+        }
+    }
+
     public bool TentarPegar()
     {
         if (coletado || SistemaInventario.Instancia == null || string.IsNullOrWhiteSpace(Id))
             return false;
 
-        bool aceito = SistemaInventario.Instancia.Possui(Id) ||
-                      SistemaInventario.Instancia.TentarAdicionar(
-                          Id,
-                          Nome,
-                          item != null ? item.largura : larguraManual,
-                          item != null ? item.altura : alturaManual,
-                          item != null ? item.canRotate : podeRotacionarManual);
+        if (JaPossui)
+            return false;
+
+        bool aceito = SistemaInventario.Instancia.TentarAdicionar(
+            Id,
+            Nome,
+            item != null ? item.largura : larguraManual,
+            item != null ? item.altura : alturaManual,
+            item != null ? item.canRotate : podeRotacionarManual);
 
         if (aceito)
+        {
             coletado = true;
+            EstadoMundo.MarcarConcluido(chaveColeta);
+        }
 
         return aceito;
     }

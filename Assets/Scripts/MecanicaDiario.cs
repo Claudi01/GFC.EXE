@@ -57,16 +57,21 @@ public class MecanicaDiario : MonoBehaviour
     void AlternarControlePlayer(bool estado)
     {
         // 1. Desliga o movimento do corpo
-        if (scriptMovimento != null) scriptMovimento.enabled = estado;
+        if (GameplayState.Instancia != null)
+        {
+            if (estado)
+                GameplayState.Instancia.Liberar(GameplayBlockReason.Diario);
+            else
+                GameplayState.Instancia.Bloquear(GameplayBlockReason.Diario);
+        }
 
         // 2. Desliga o giro da câmera na força bruta
-        if (scriptOlharCamera != null) scriptOlharCamera.enabled = estado;
+        // O movimento e a camera obedecem ao bloqueio central.
 
         // 3. Desliga o sistema de interação invisível
         if (scriptInteracao != null)
         {
             scriptInteracao.EsconderTexto();
-            scriptInteracao.enabled = estado;
         }
 
         // 4. Apaga o texto "Ler" direto na raiz

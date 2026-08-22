@@ -19,7 +19,7 @@ public class InteracaoPlayer : MonoBehaviour
 
     private void Update()
     {
-        if (SistemaInventario.Instancia != null && SistemaInventario.Instancia.Aberto)
+        if (GameplayState.Instancia != null && GameplayState.Instancia.EstaBloqueado)
         {
             EsconderTexto();
             return;
@@ -49,7 +49,10 @@ public class InteracaoPlayer : MonoBehaviour
         ItemPickup pickup = acerto.collider.GetComponentInParent<ItemPickup>();
         if (pickup != null)
         {
-            MostrarTexto("Pegar " + pickup.Nome);
+            if (pickup.JaPossui)
+                MostrarTexto("Ja possuo " + pickup.Nome);
+            else
+                MostrarTexto("Pegar " + pickup.Nome);
         }
         else if (acerto.collider.CompareTag("Diario"))
         {
@@ -106,6 +109,12 @@ public class InteracaoPlayer : MonoBehaviour
 
     private void ColetarPickup(ItemPickup pickup)
     {
+        if (pickup.JaPossui)
+        {
+            MostrarTexto("Ja possuo " + pickup.Nome);
+            return;
+        }
+
         if (!pickup.TentarPegar())
         {
             MostrarTexto("Inventario cheio");

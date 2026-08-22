@@ -28,6 +28,9 @@ public class DynamoFlashlight : MonoBehaviour
 
     void Update()
     {
+        if (GameplayState.Instancia != null && GameplayState.Instancia.EstaBloqueado)
+            return;
+
         // 1. O Jogador aperta o gatilho ('F')
         if (Input.GetKeyDown(KeyCode.F))
         {

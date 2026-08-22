@@ -24,6 +24,6 @@ public class ItemDeixadoNoCenario : MonoBehaviour
         if (modelo == null)
             return;
 
-        modelo.SetActive(PlayerPrefs.GetInt(chaveEstado, 0) == 1);
+        modelo.SetActive(EstadoMundo.EstaConcluido(chaveEstado));
     }
 }
