@@ -13,7 +13,8 @@ public class FirstPersonController : MonoBehaviour
     [Header("Camera Settings")]
     public Camera playerCamera;
     public float lookSpeed = 2.0f;
-    public float lookXLimit = 45.0f;
+    [Tooltip("Limite vertical da camera. 90 graus permite olhar totalmente para cima e para baixo.")]
+    public float lookXLimit = 90.0f;
 
     private CharacterController characterController;
     private Vector3 moveDirection = Vector3.zero;

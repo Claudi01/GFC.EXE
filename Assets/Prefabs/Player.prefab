@@ -459,7 +459,7 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9002773722751999102}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
@@ -540,7 +540,7 @@ MonoBehaviour:
   jumpHeight: 1.5
   playerCamera: {fileID: 3776420645457405631}
   lookSpeed: 2
-  lookXLimit: 45
+  lookXLimit: 90
 --- !u!143 &6555130066389799823
 CharacterController:
   m_ObjectHideFlags: 0
