@@ -249,24 +249,26 @@ public class SistemaInventario : MonoBehaviour
     }
     public bool Mover(InventarioGrade.Item item, Vector2 tela)
     {
-        return Mover(item, tela, Vector2Int.zero);
+        InventarioItemUI view;
+        if (item == null || !views.TryGetValue(item, out view)) return false;
+        return Mover(item, view.GetComponent<RectTransform>());
     }
 
-    internal bool Mover(InventarioGrade.Item item, Vector2 tela, Vector2Int deslocamentoClique)
+    internal bool Mover(InventarioGrade.Item item, RectTransform itemRect)
     {
         int x, y;
-        if (!TentarObterCelula(tela, out x, out y)) { AtualizarUI(); return false; }
-        x -= deslocamentoClique.x;
-        y -= deslocamentoClique.y;
+        if (!TentarObterCelulaDoItem(itemRect, item.LarguraAtual, item.AlturaAtual, out x, out y))
+        {
+            AtualizarUI();
+            return false;
+        }
         bool ok = Grade.TentarMover(item, x, y); if (ok) Salvar(); AtualizarUI(); return ok;
     }
 
-    internal bool PodeMover(InventarioGrade.Item item, Vector2 tela, Vector2Int deslocamentoClique)
+    internal bool PodeMover(InventarioGrade.Item item, RectTransform itemRect)
     {
         int x, y;
-        if (!TentarObterCelula(tela, out x, out y)) return false;
-        x -= deslocamentoClique.x;
-        y -= deslocamentoClique.y;
+        if (!TentarObterCelulaDoItem(itemRect, item.LarguraAtual, item.AlturaAtual, out x, out y)) return false;
         int ox=item.x, oy=item.y; item.x=x; item.y=y; bool ok=Grade.TentarMover(item,x,y); item.x=ox; item.y=oy; return ok;
     }
 
@@ -275,22 +277,40 @@ public class SistemaInventario : MonoBehaviour
         x = y = -1;
         if (gradeUI == null || !gradeUI.gameObject.activeInHierarchy) return false;
 
-        Vector3[] cantos = new Vector3[4];
-        gradeUI.GetWorldCorners(cantos);
-        float esquerda = cantos[0].x;
-        float direita = cantos[2].x;
-        float baixo = cantos[0].y;
-        float cima = cantos[2].y;
+        Vector2 local;
+        if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(gradeUI, tela, null, out local)) return false;
+        Rect grade = gradeUI.rect;
+        float larguraCelula = grade.width / Grade.colunas;
+        float alturaCelula = grade.height / Grade.linhas;
+        if (larguraCelula <= 0f || alturaCelula <= 0f || !grade.Contains(local)) return false;
 
-        if (tela.x < esquerda || tela.x >= direita || tela.y < baixo || tela.y >= cima) return false;
-
-        float larguraTela = direita - esquerda;
-        float alturaTela = cima - baixo;
-        if (larguraTela <= 0f || alturaTela <= 0f) return false;
-
-        x = Mathf.FloorToInt((tela.x - esquerda) / larguraTela * Grade.colunas);
-        y = Mathf.FloorToInt((cima - tela.y) / alturaTela * Grade.linhas);
+        x = Mathf.FloorToInt((local.x - grade.xMin) / larguraCelula);
+        y = Mathf.FloorToInt((grade.yMax - local.y) / alturaCelula);
         return x >= 0 && y >= 0 && x < Grade.colunas && y < Grade.linhas;
+    }
+
+    /// <summary>
+    /// Obtém a célula superior esquerda a partir do próprio item visual.
+    /// O mouse não participa da indexação: ele só desloca o RectTransform durante o arraste.
+    /// </summary>
+    internal bool TentarObterCelulaDoItem(RectTransform itemRect, int largura, int altura, out int x, out int y)
+    {
+        x = y = -1;
+        if (itemRect == null || gradeUI == null || !gradeUI.gameObject.activeInHierarchy || largura < 1 || altura < 1) return false;
+
+        Vector3[] cantos = new Vector3[4];
+        itemRect.GetWorldCorners(cantos);
+        Vector3 centroItem = (cantos[0] + cantos[2]) * 0.5f;
+        Vector3 centroLocal = gradeUI.InverseTransformPoint(centroItem);
+        Rect grade = gradeUI.rect;
+        float larguraCelula = grade.width / Grade.colunas;
+        float alturaCelula = grade.height / Grade.linhas;
+        if (larguraCelula <= 0f || alturaCelula <= 0f) return false;
+
+        // O centro e o tamanho do item determinam qual quadrado da grade é o seu primeiro.
+        x = Mathf.RoundToInt((centroLocal.x - grade.xMin) / larguraCelula - largura * 0.5f);
+        y = Mathf.RoundToInt((grade.yMax - centroLocal.y) / alturaCelula - altura * 0.5f);
+        return true;
     }
 
     private InventarioGrade.Item EncontrarItemNaTela(Vector2 tela)
@@ -353,7 +373,6 @@ public class SistemaInventario : MonoBehaviour
 public class InventarioItemUI : MonoBehaviour
 {
     public SistemaInventario sistema; public InventarioGrade.Item item; private CanvasGroup grupo;
-    private Vector2Int deslocamentoClique;
     private Vector2 deslocamentoVisual;
     private bool arrastando;
     public void Configurar(bool selecionado) { Image i=GetComponent<Image>(); i.color=selecionado?new Color(.95f,.75f,.18f,1):new Color(.35f,.55f,.28f,1); sistema.ReposicionarView(this); if (grupo == null) { grupo = gameObject.GetComponent<CanvasGroup>(); if (grupo == null) grupo = gameObject.AddComponent<CanvasGroup>(); } }
@@ -362,14 +381,6 @@ public class InventarioItemUI : MonoBehaviour
     {
         sistema.Selecionar(item);
         deslocamentoVisual = (Vector2)GetComponent<RectTransform>().position - posicaoTela;
-        int x, y;
-        if (sistema.TentarObterCelula(posicaoTela, out x, out y))
-        {
-            deslocamentoClique = new Vector2Int(
-                Mathf.Clamp(x - item.x, 0, item.LarguraAtual - 1),
-                Mathf.Clamp(y - item.y, 0, item.AlturaAtual - 1));
-        }
-        else deslocamentoClique = Vector2Int.zero;
         transform.SetAsLastSibling();
         grupo.blocksRaycasts = false;
         arrastando = true;
@@ -380,10 +391,7 @@ public class InventarioItemUI : MonoBehaviour
     {
         if (!arrastando) return;
         transform.position = posicaoTela + deslocamentoVisual;
-        Vector2Int offsetAtual = new Vector2Int(
-            Mathf.Clamp(deslocamentoClique.x, 0, item.LarguraAtual - 1),
-            Mathf.Clamp(deslocamentoClique.y, 0, item.AlturaAtual - 1));
-        GetComponent<Image>().color = sistema.PodeMover(item, posicaoTela, offsetAtual)
+        GetComponent<Image>().color = sistema.PodeMover(item, GetComponent<RectTransform>())
             ? new Color(.25f,.9f,.3f,1)
             : new Color(.9f,.2f,.2f,1);
     }
@@ -393,10 +401,7 @@ public class InventarioItemUI : MonoBehaviour
         if (!arrastando) return;
         arrastando = false;
         grupo.blocksRaycasts = true;
-        Vector2Int offsetAtual = new Vector2Int(
-            Mathf.Clamp(deslocamentoClique.x, 0, item.LarguraAtual - 1),
-            Mathf.Clamp(deslocamentoClique.y, 0, item.AlturaAtual - 1));
-        sistema.Mover(item, posicaoTela, offsetAtual);
+        sistema.Mover(item, GetComponent<RectTransform>());
         sistema.Selecionar(null);
     }
 
