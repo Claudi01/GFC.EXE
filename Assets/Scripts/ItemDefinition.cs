@@ -10,4 +10,6 @@ public class ItemDefinition : ScriptableObject
     [Min(1)] public int largura = 1;
     [Min(1)] public int altura = 1;
     public bool canRotate = true;
+    [Tooltip("Unidades com o mesmo ID compartilham um espaco no inventario.")]
+    public bool empilhavel = false;
 }

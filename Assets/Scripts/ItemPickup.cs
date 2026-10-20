@@ -9,6 +9,8 @@ public class ItemPickup : MonoBehaviour
     [Header("Definicao preferencial")]
     public ItemDefinition item;
 
+    [Min(1)] public int quantidade = 1;
+
     [Header("Fallback manual")]
     [Tooltip("Use estes campos somente quando nao houver ItemDefinition.")]
     public string idManual = "";
@@ -43,14 +45,15 @@ public class ItemPickup : MonoBehaviour
     {
         get
         {
-            return SistemaInventario.Instancia != null &&
+            return (item == null || !item.empilhavel) && SistemaInventario.Instancia != null &&
                    SistemaInventario.Instancia.Possui(Id);
         }
     }
 
     public bool TentarPegar()
     {
-        if (coletado || SistemaInventario.Instancia == null || string.IsNullOrWhiteSpace(Id))
+        if (coletado || !isActiveAndEnabled || EstadoMundo.EstaConcluido(chaveColeta) ||
+            SistemaInventario.Instancia == null || string.IsNullOrWhiteSpace(Id))
             return false;
 
         if (JaPossui)
@@ -61,7 +64,9 @@ public class ItemPickup : MonoBehaviour
             Nome,
             item != null ? item.largura : larguraManual,
             item != null ? item.altura : alturaManual,
-            item != null ? item.canRotate : podeRotacionarManual);
+            item != null ? item.canRotate : podeRotacionarManual,
+            quantidade,
+            item != null && item.empilhavel);
 
         if (aceito)
         {

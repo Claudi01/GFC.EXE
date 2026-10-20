@@ -47,12 +47,17 @@ public class InteracaoPlayer : MonoBehaviour
         }
 
         ItemPickup pickup = acerto.collider.GetComponentInParent<ItemPickup>();
+        InteragivelCenario interagivel = acerto.collider.GetComponentInParent<InteragivelCenario>();
         if (pickup != null)
         {
             if (pickup.JaPossui)
                 MostrarTexto("Ja possuo " + pickup.Nome);
             else
                 MostrarTexto("Pegar " + pickup.Nome);
+        }
+        else if (interagivel != null && interagivel.isActiveAndEnabled)
+        {
+            MostrarTexto(interagivel.ObterTextoInteracao());
         }
         else if (acerto.collider.CompareTag("Diario"))
         {
@@ -82,9 +87,18 @@ public class InteracaoPlayer : MonoBehaviour
             return;
 
         ItemPickup pickup = acerto.collider.GetComponentInParent<ItemPickup>();
+        InteragivelCenario interagivel = acerto.collider.GetComponentInParent<InteragivelCenario>();
         if (pickup != null)
         {
             ColetarPickup(pickup);
+        }
+        else if (interagivel != null && interagivel.isActiveAndEnabled)
+        {
+            interagivel.Interagir();
+            if (GameplayState.Instancia != null && GameplayState.Instancia.EstaBloqueado)
+                EsconderTexto();
+            else
+                VerificarMira();
         }
         else if (acerto.collider.CompareTag("Diario"))
         {

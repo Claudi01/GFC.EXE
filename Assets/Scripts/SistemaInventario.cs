@@ -23,7 +23,7 @@ public class SistemaInventario : MonoBehaviour
     private const bool LimparSaveAoIniciarAplicacao = true;
     private Text detalhes;
     [Serializable] private class SaveData { public string equipado; public List<SaveItem> itens = new List<SaveItem>(); }
-    [Serializable] private class SaveItem { public string id, nome; public int largura, altura, x, y; public bool rotacionado, podeRotacionar; }
+    [Serializable] private class SaveItem { public string id, nome; public int largura, altura, x, y; public bool rotacionado, podeRotacionar; public int quantidade = 1; public bool empilhavel; }
     public string ItemEquipadoId { get; private set; } = "lanterna";
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
@@ -164,19 +164,35 @@ public class SistemaInventario : MonoBehaviour
         Cursor.lockState = Aberto ? CursorLockMode.None : CursorLockMode.Locked;
         Cursor.visible = Aberto;
     }
-    public bool TentarAdicionar(ItemDefinition definicao)
+    public bool TentarAdicionar(ItemDefinition definicao, int quantidade = 1)
     {
-        return definicao != null && TentarAdicionar(definicao.id, definicao.nome, definicao.largura, definicao.altura, definicao.canRotate);
+        return definicao != null && TentarAdicionar(definicao.id, definicao.nome, definicao.largura,
+            definicao.altura, definicao.canRotate, quantidade, definicao.empilhavel);
     }
-    public bool TentarAdicionar(string id, string nome, int largura = 1, int altura = 1, bool podeRotacionar = true)
+    public bool TentarAdicionar(string id, string nome, int largura = 1, int altura = 1,
+        bool podeRotacionar = true, int quantidade = 1, bool empilhavel = false)
     {
         InventarioGrade.Item item;
-        if (Possui(id)) return false;
-        bool aceito = Grade.TentarAdicionar(id, nome, largura, altura, out item, podeRotacionar);
+        if (Grade == null) return false;
+        bool aceito = Grade.TentarAdicionar(id, nome, largura, altura, out item, podeRotacionar, quantidade, empilhavel);
         if (aceito) { Selecionado = item; Salvar(); AtualizarUI(); }
         return aceito;
     }
     public bool Possui(string id) { return Grade != null && Grade.Contem(id); }
+
+    public int Quantidade(string id) { return Grade != null ? Grade.Quantidade(id) : 0; }
+
+    public bool ConsumirItem(string id, int quantidade = 1)
+    {
+        if (Grade == null || !Grade.TentarConsumir(id, quantidade)) return false;
+        if (Selecionado != null && !Grade.Itens.Contains(Selecionado)) Selecionado = null;
+        if (Selecionado == null && detalhes != null) detalhes.text = "";
+        if (Selecionado == null && detalhes != null) detalhes.text = "";
+        if (!Possui(ItemEquipadoId)) ItemEquipadoId = Possui("lanterna") ? "lanterna" : string.Empty;
+        Salvar();
+        AtualizarUI();
+        return true;
+    }
 
     public bool RemoverItem(string id)
     {
@@ -329,13 +345,13 @@ public class SistemaInventario : MonoBehaviour
     private void Salvar()
     {
         SaveData data=new SaveData { equipado=ItemEquipadoId };
-        foreach(var i in Grade.Itens) data.itens.Add(new SaveItem { id=i.id,nome=i.nome,largura=i.largura,altura=i.altura,x=i.x,y=i.y,rotacionado=i.rotacionado,podeRotacionar=i.podeRotacionar });
+        foreach(var i in Grade.Itens) data.itens.Add(new SaveItem { id=i.id,nome=i.nome,largura=i.largura,altura=i.altura,x=i.x,y=i.y,rotacionado=i.rotacionado,podeRotacionar=i.podeRotacionar,quantidade=i.quantidade,empilhavel=i.empilhavel });
         PlayerPrefs.SetString(ChaveSave, JsonUtility.ToJson(data)); PlayerPrefs.Save();
     }
     private void Restaurar()
     {
         if (!PlayerPrefs.HasKey(ChaveSave)) return;
-        try { var data=JsonUtility.FromJson<SaveData>(PlayerPrefs.GetString(ChaveSave)); if(data==null||data.itens==null)return; foreach(var s in data.itens) { if(string.IsNullOrEmpty(s.id)||s.largura<1||s.altura<1)continue; Grade.TentarRestaurar(new InventarioGrade.Item { id=s.id,nome=s.nome,largura=s.largura,altura=s.altura,x=s.x,y=s.y,rotacionado=s.rotacionado,podeRotacionar=s.podeRotacionar }); } ItemEquipadoId=string.IsNullOrEmpty(data.equipado)?"lanterna":data.equipado; }
+        try { var data=JsonUtility.FromJson<SaveData>(PlayerPrefs.GetString(ChaveSave)); if(data==null||data.itens==null)return; foreach(var s in data.itens) { if(string.IsNullOrEmpty(s.id)||s.largura<1||s.altura<1)continue; Grade.TentarRestaurar(new InventarioGrade.Item { id=s.id,nome=s.nome,largura=s.largura,altura=s.altura,x=s.x,y=s.y,rotacionado=s.rotacionado,podeRotacionar=s.podeRotacionar,quantidade=s.empilhavel?s.quantidade:1,empilhavel=s.empilhavel }); } ItemEquipadoId=string.IsNullOrEmpty(data.equipado)?"lanterna":data.equipado; }
         catch (Exception) { PlayerPrefs.DeleteKey(ChaveSave); }
     }
 
@@ -375,7 +391,30 @@ public class InventarioItemUI : MonoBehaviour
     public SistemaInventario sistema; public InventarioGrade.Item item; private CanvasGroup grupo;
     private Vector2 deslocamentoVisual;
     private bool arrastando;
-    public void Configurar(bool selecionado) { Image i=GetComponent<Image>(); i.color=selecionado?new Color(.95f,.75f,.18f,1):new Color(.35f,.55f,.28f,1); sistema.ReposicionarView(this); if (grupo == null) { grupo = gameObject.GetComponent<CanvasGroup>(); if (grupo == null) grupo = gameObject.AddComponent<CanvasGroup>(); } }
+    private Text contador;
+    public void Configurar(bool selecionado)
+    {
+        Image i = GetComponent<Image>();
+        i.color = selecionado ? new Color(.95f,.75f,.18f,1) : new Color(.35f,.55f,.28f,1);
+        sistema.ReposicionarView(this);
+        if (grupo == null) grupo = GetComponent<CanvasGroup>() ?? gameObject.AddComponent<CanvasGroup>();
+        if (item.empilhavel && contador == null)
+        {
+            GameObject objeto = new GameObject("Quantidade", typeof(RectTransform), typeof(Text));
+            objeto.transform.SetParent(transform, false);
+            contador = objeto.GetComponent<Text>();
+            contador.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            contador.fontSize = 16;
+            contador.alignment = TextAnchor.LowerRight;
+            contador.color = Color.white;
+            contador.raycastTarget = false;
+            contador.rectTransform.anchorMin = Vector2.zero;
+            contador.rectTransform.anchorMax = Vector2.one;
+            contador.rectTransform.offsetMin = new Vector2(3f, 3f);
+            contador.rectTransform.offsetMax = new Vector2(-3f, -3f);
+        }
+        if (contador != null) contador.text = item.empilhavel ? "x" + item.quantidade : "";
+    }
 
     public void IniciarArraste(Vector2 posicaoTela)
     {
