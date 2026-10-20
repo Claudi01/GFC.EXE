@@ -1,5 +1,7 @@
 # Puzzle da elétrica — primeira versão
 
+> Esta página descreve a versão original de reparos com cobre. A ativação pelo console, o sorteio, o circuito em sequência e as cores estão documentados em `docs/PuzzleEletrica_AtivacaoConsole.md`.
+
 Cada caixa defeituosa consome **uma unidade de fio de cobre**. As unidades ficam
 empilhadas em um espaço 1x1 da maleta. Lanterna, gancho e pé de cabra continuam
 sendo itens únicos. O fio é usado direto do inventário: não precisa de modelo na mão

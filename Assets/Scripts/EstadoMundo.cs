@@ -31,6 +31,19 @@ public static class EstadoMundo
         PlayerPrefs.Save();
     }
 
+    public static string LerTexto(string chave)
+    {
+        return string.IsNullOrWhiteSpace(chave) ? string.Empty : PlayerPrefs.GetString(chave, string.Empty);
+    }
+
+    public static void SalvarTexto(string chave, string valor)
+    {
+        if (string.IsNullOrWhiteSpace(chave)) return;
+        PlayerPrefs.SetString(chave, valor);
+        Registrar(chave);
+        PlayerPrefs.Save();
+    }
+
     public static void LimparTudo()
     {
         Registro registro = LerRegistro();
