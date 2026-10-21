@@ -7,6 +7,7 @@ public class QuebravelCenario : InteragivelCenario
     [Tooltip("Unica por objeto. Vazia = nao persiste ao trocar de cena.")]
     [SerializeField] private string chaveProgresso;
     [SerializeField] private string textoSemFerramenta = "Preciso de um pe de cabra para quebrar isto.";
+    [SerializeField] private string textoComFerramenta = "Equipe o pe de cabra e bata com M1";
     [Tooltip("Pivo do visual. Para uma porta caindo, coloque-o na base da folha.")]
     [SerializeField] private Transform visual;
     [Tooltip("Somente os colliders que bloqueiam a passagem, nunca os da parede.")]
@@ -26,6 +27,9 @@ public class QuebravelCenario : InteragivelCenario
     private bool animando;
     public int ImpactosRecebidos => impactos;
     public bool EstaQuebrado => impactos >= impactosParaQuebrar;
+    // Permite reacoes especificas sem acoplar o ataque a portas ou a outros puzzles.
+    // O argumento informa se deve animar ou restaurar diretamente um estado salvo.
+    public event System.Action<bool> EstadoAlterado;
 
     private void Awake()
     {
@@ -52,6 +56,7 @@ public class QuebravelCenario : InteragivelCenario
     {
         foreach (Collider bloqueio in bloqueios)
             if (bloqueio != null) bloqueio.enabled = !EstaQuebrado;
+        EstadoAlterado?.Invoke(animar);
         if (visual == null) return;
 
         posicaoAlvo = posicaoInicial + (EstaQuebrado ? deslocamentoQuebrado : deslocamentoPorImpacto * impactos);
@@ -85,7 +90,7 @@ public class QuebravelCenario : InteragivelCenario
         if (EstaQuebrado) return string.Empty;
         if (SistemaInventario.Instancia == null || !SistemaInventario.Instancia.Possui("pe_de_cabra"))
             return textoSemFerramenta;
-        return "Equipe o pe de cabra e bata com M1 (" + impactos + "/" + impactosParaQuebrar + ")";
+        return textoComFerramenta + " (" + impactos + "/" + impactosParaQuebrar + ")";
     }
 
     // O texto usa o raycast de interacao existente; E nao substitui o golpe com M1.

@@ -601,13 +601,18 @@ MonoBehaviour:
   camadasImpacto:
     serializedVersion: 2
     m_Bits: 4294967295
-  tempoPreparo: 0.18
+  tempoPreparo: 0.22
   tempoGolpe: 0.12
-  tempoRetorno: 0.28
+  tempoRetorno: 0.34
   posicaoPreparo: {x: 0.04, y: -0.02, z: 0.12}
   rotacaoPreparo: {x: -8, y: 0, z: -12}
   posicaoImpacto: {x: -0.1, y: 0.12, z: 0.15}
   rotacaoImpacto: {x: 50, y: 0, z: 25}
+  arcoGolpe: {x: -0.03, y: 0.045, z: 0}
+  pausaImpacto: 0.045
+  tempoRecuo: 0.1
+  deslocamentoRecuo: {x: 0.025, y: 0.015, z: -0.09}
+  rotacaoRecuo: {x: -13, y: 3, z: -6}
 --- !u!114 &1847382916
 MonoBehaviour:
   m_ObjectHideFlags: 0

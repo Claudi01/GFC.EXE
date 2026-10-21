@@ -9,19 +9,26 @@ public class AtaquePeDeCabra : MonoBehaviour
     [SerializeField, Min(0.1f)] private float alcance = 2.2f;
     [SerializeField] private LayerMask camadasImpacto = ~0;
     [Header("Animacao (deslocamentos nos eixos da camera)")]
-    [SerializeField, Min(0.01f)] private float tempoPreparo = 0.18f;
+    [SerializeField, Min(0.01f)] private float tempoPreparo = 0.22f;
     [SerializeField, Min(0.01f)] private float tempoGolpe = 0.12f;
-    [SerializeField, Min(0.01f)] private float tempoRetorno = 0.28f;
+    [SerializeField, Min(0.01f)] private float tempoRetorno = 0.34f;
     [SerializeField] private Vector3 posicaoPreparo = new Vector3(0.04f, -0.02f, 0.12f);
     [SerializeField] private Vector3 rotacaoPreparo = new Vector3(-8f, 0f, -12f);
     [SerializeField] private Vector3 posicaoImpacto = new Vector3(-0.1f, 0.12f, 0.15f);
     [SerializeField] private Vector3 rotacaoImpacto = new Vector3(50f, 0f, 25f);
+    [SerializeField] private Vector3 arcoGolpe = new Vector3(-0.03f, 0.045f, 0f);
+    [Header("Peso do impacto (somente a ferramenta, sem congelar o jogo)")]
+    [SerializeField, Min(0f)] private float pausaImpacto = 0.045f;
+    [SerializeField, Min(0.01f)] private float tempoRecuo = 0.1f;
+    [SerializeField] private Vector3 deslocamentoRecuo = new Vector3(0.025f, 0.015f, -0.09f);
+    [SerializeField] private Vector3 rotacaoRecuo = new Vector3(-13f, 3f, -6f);
 
     private Transform visual;
     private Vector3 posicaoRepouso;
     private Quaternion rotacaoRepouso;
     private float tempo;
     private bool acertou;
+    private bool atingiuSuperficie;
     private bool golpeEmAndamento;
     public bool GolpeEmAndamento => golpeEmAndamento;
 
@@ -62,6 +69,7 @@ public class AtaquePeDeCabra : MonoBehaviour
         rotacaoRepouso = visual.localRotation;
         tempo = 0f;
         acertou = false;
+        atingiuSuperficie = false;
         golpeEmAndamento = true;
         return true;
     }
@@ -79,32 +87,57 @@ public class AtaquePeDeCabra : MonoBehaviour
         tempo += delta;
         float instanteImpacto = tempoPreparo + tempoGolpe;
         if (tempo < tempoPreparo)
-            AplicarPose(Vector3.zero, Vector3.zero, posicaoPreparo, rotacaoPreparo, tempo / tempoPreparo);
+            AplicarPose(Vector3.zero, Vector3.zero, posicaoPreparo, rotacaoPreparo, Suavizar(tempo / tempoPreparo));
         else if (tempo < instanteImpacto)
+        {
+            // Aceleracao ate o contato; o arco evita uma simples translacao reta.
+            float t = Mathf.Clamp01((tempo - tempoPreparo) / tempoGolpe);
             AplicarPose(posicaoPreparo, rotacaoPreparo, posicaoImpacto, rotacaoImpacto,
-                (tempo - tempoPreparo) / tempoGolpe);
+                t * t, arcoGolpe * Mathf.Sin(t * Mathf.PI));
+        }
         else
         {
             if (!acertou)
             {
                 acertou = true;
-                AplicarImpacto();
+                atingiuSuperficie = AplicarImpacto();
             }
 
-            AplicarPose(posicaoImpacto, rotacaoImpacto, Vector3.zero, Vector3.zero,
-                (tempo - instanteImpacto) / tempoRetorno);
-            if (tempo >= instanteImpacto + tempoRetorno) CancelarGolpe();
+            float aposImpacto = tempo - instanteImpacto;
+            float pausa = atingiuSuperficie ? pausaImpacto : 0f;
+            Vector3 posFinal = posicaoImpacto + (atingiuSuperficie
+                ? deslocamentoRecuo : new Vector3(-0.04f, -0.025f, 0.10f));
+            Vector3 rotFinal = rotacaoImpacto + (atingiuSuperficie
+                ? rotacaoRecuo : new Vector3(10f, 0f, 4f));
+            if (aposImpacto < pausa)
+                AplicarPose(posicaoImpacto, rotacaoImpacto, posicaoImpacto, rotacaoImpacto, 0f);
+            else if (aposImpacto < pausa + tempoRecuo)
+            {
+                float t = Mathf.Clamp01((aposImpacto - pausa) / tempoRecuo);
+                AplicarPose(posicaoImpacto, rotacaoImpacto, posFinal, rotFinal, 1f - Mathf.Pow(1f - t, 3f));
+            }
+            else
+            {
+                AplicarPose(posFinal, rotFinal, Vector3.zero, Vector3.zero,
+                    Suavizar((aposImpacto - pausa - tempoRecuo) / tempoRetorno));
+                if (aposImpacto >= pausa + tempoRecuo + tempoRetorno) CancelarGolpe();
+            }
         }
     }
 
-    private void AplicarPose(Vector3 inicio, Vector3 rotInicio, Vector3 fim, Vector3 rotFim, float t)
+    private static float Suavizar(float t)
     {
-        t = Mathf.SmoothStep(0f, 1f, t);
-        visual.localPosition = posicaoRepouso + Vector3.Lerp(inicio, fim, t);
+        t = Mathf.Clamp01(t);
+        return t * t * t * (t * (t * 6f - 15f) + 10f);
+    }
+
+    private void AplicarPose(Vector3 inicio, Vector3 rotInicio, Vector3 fim, Vector3 rotFim, float t, Vector3 arco = default)
+    {
+        visual.localPosition = posicaoRepouso + Vector3.Lerp(inicio, fim, t) + arco;
         visual.localRotation = Quaternion.Slerp(Quaternion.Euler(rotInicio), Quaternion.Euler(rotFim), t) * rotacaoRepouso;
     }
 
-    private void AplicarImpacto()
+    private bool AplicarImpacto()
     {
         // Ordena pela distancia e ignora apenas os colliders do proprio jogador.
         // Uma parede/objeto nao quebravel continua bloqueando o golpe.
@@ -116,8 +149,9 @@ public class AtaquePeDeCabra : MonoBehaviour
             if (acerto.collider.transform.IsChildOf(transform)) continue;
             QuebravelCenario alvo = acerto.collider.GetComponentInParent<QuebravelCenario>();
             if (alvo != null) alvo.ReceberImpacto();
-            break;
+            return true;
         }
+        return false;
     }
 
     private void CancelarGolpe()
@@ -140,5 +174,7 @@ public class AtaquePeDeCabra : MonoBehaviour
         tempoPreparo = Mathf.Max(0.01f, tempoPreparo);
         tempoGolpe = Mathf.Max(0.01f, tempoGolpe);
         tempoRetorno = Mathf.Max(0.01f, tempoRetorno);
+        tempoRecuo = Mathf.Max(0.01f, tempoRecuo);
+        pausaImpacto = Mathf.Max(0f, pausaImpacto);
     }
 }
