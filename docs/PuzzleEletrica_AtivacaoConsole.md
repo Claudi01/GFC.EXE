@@ -1,6 +1,11 @@
 # Elétrica — console, ferramentas e reparos
 
-Atualizado em **20/10/2026**. Esta etapa cobre ativação, sorteio, continuidade, cores, coleta dos três placeholders e reparo dos três tipos de defeito pelo inventário.
+Atualizado em **20/10/2026**. Este é o guia vigente do puzzle: ativação, sorteio,
+continuidade, cores, ferramentas, configuração da cena e validação.
+
+> Para encontrar os documentos em ordem e distinguir o estado atual dos registros
+> antigos, comece por [`docs/README.md`](README.md). Este guia reflete a cena
+> salva atualmente em disco, inclusive a reorganização local ainda não commitada.
 
 ## Funcionamento aplicado
 
@@ -33,32 +38,44 @@ O preto ter prioridade foi confirmado pelo usuário. Assim, somente o primeiro d
 - `CentralEnergia` está no console **Modelos eletrica/CONTROL_CONSOLE_STRAIGHT**, confirmado pelo usuário. A cópia chamada `CONTROL_CONSOLE_STRAIGHT (1)` não foi configurada.
 - Os 16 armários do grupo **Armarios** receberam `CaixaEnergia` e IDs exclusivos.
 - Os cubos `Ferramenta 1`, `Ferramenta 2` e `Ferramenta 3` possuem `ItemPickup`, cores próprias e chaves de coleta exclusivas.
-- Foi mantida a ordem existente dos filhos do grupo. A ordem elétrica está no array **Caixas** do gerenciador; o nome antigo do modelo não determina essa ordem.
+- A ordem elétrica é a ordem do array **Caixas** no gerenciador. Ela não deve ser
+  deduzida só pelo nome do modelo nem pela ordenação alfabética da Hierarchy.
 - Foram acrescentados 11 MeshColliders onde faltavam: cinco nos corpos dos armários antigos e seis nas partes do console.
-- Transformações, posições, hierarquia, malhas, renderizadores e referências de prefab existentes foram preservados.
+- A reorganização recente renomeou os armários, remapeou seus IDs e alterou
+  geometria ProBuilder das paredes. Para posições e aparência atuais, consulte a
+  cena; as regras do puzzle não dependem dos nomes das paredes.
 
 ### Ordem configurada
 
-| Posição na sequência | ID do puzzle | Nome existente do objeto |
+| Posição no array `Caixas` | `idCaixa` | Nome atual na Hierarchy |
 |---|---|---|
-| 1 | C01 | `LARGE_ELECTRICAL_CABINET_C01` |
-| 2 | C02 | `LARGE_ELECTRICAL_CABINET_C01 (1)` |
-| 3 | C03 | `LARGE_ELECTRICAL_CABINET_C02` |
-| 4 | C04 | `LARGE_ELECTRICAL_CABINET_C03` |
-| 5 | C05 | `LARGE_ELECTRICAL_CABINET_C04` |
-| 6 | C06 | `LARGE_ELECTRICAL_CABINET_C05` |
-| 7 | C07 | `LARGE_ELECTRICAL_CABINET_C06` |
-| 8 | C08 | `LARGE_ELECTRICAL_CABINET_C07` |
-| 9 | C09 | `LARGE_ELECTRICAL_CABINET_C08` |
-| 10 | C10 | `LARGE_ELECTRICAL_CABINET_C09` |
-| 11 | C11 | `LARGE_ELECTRICAL_CABINET_C10` |
-| 12 | C12 | `LARGE_ELECTRICAL_CABINET (1)` |
-| 13 | C13 | `LARGE_ELECTRICAL_CABINET (2)` |
-| 14 | C14 | `LARGE_ELECTRICAL_CABINET (3)` |
-| 15 | C15 | `LARGE_ELECTRICAL_CABINET (4)` |
-| 16 | C16 | `LARGE_ELECTRICAL_CABINET (5)` |
+| 1 | C06 | `LARGE_ELECTRICAL_CABINET_C06` |
+| 2 | C05 | `LARGE_ELECTRICAL_CABINET_C05` |
+| 3 | C07 | `LARGE_ELECTRICAL_CABINET_C07` |
+| 4 | C08 | `LARGE_ELECTRICAL_CABINET_C08` |
+| 5 | C09 | `LARGE_ELECTRICAL_CABINET_C09` |
+| 6 | C10 | `LARGE_ELECTRICAL_CABINET_C010` |
+| 7 | C11 | `LARGE_ELECTRICAL_CABINET_C011` |
+| 8 | C12 | `LARGE_ELECTRICAL_CABINET_C012` |
+| 9 | C13 | `LARGE_ELECTRICAL_CABINET_C013` |
+| 10 | C14 | `LARGE_ELECTRICAL_CABINET_C014` |
+| 11 | C15 | `LARGE_ELECTRICAL_CABINET_C015` |
+| 12 | C0 | `LARGE_ELECTRICAL_CABINET_C0` |
+| 13 | C01 | `LARGE_ELECTRICAL_CABINET_C01` |
+| 14 | C03 | `LARGE_ELECTRICAL_CABINET_C03` |
+| 15 | C04 | `LARGE_ELECTRICAL_CABINET_C04` |
+| 16 | C02 | `LARGE_ELECTRICAL_CABINET_C02` |
 
-A ordem pode ser ajustada no array **Caixas**, sem mover os objetos. Alterações de IDs ou da sequência exigem iniciar uma nova partida, porque a distribuição salva valida os IDs e sua ordem.
+A sequência acima foi lida do array **Caixas** da cena, não ordenada pelo texto
+do ID. Os 16 IDs atuais são preenchidos e únicos. `C0` é o ID literal do armário
+na posição 12; o código aceita esse valor, mas a interação também exibirá `C0`.
+Nomes como `C010` são apenas nomes de GameObject: a lógica usa `idCaixa` e a
+referência serializada no array. Alterar IDs ou a ordem exige iniciar uma nova
+partida, pois o sorteio salvo verifica a sequência.
+
+As alterações recentes nas paredes são geometria ProBuilder da cena, separada
+do estado do circuito. Depois de editar dimensões ou colisores, valide o acesso
+físico e o raycast de interação em Play Mode.
 
 A quantidade é sorteada separadamente para cada categoria, entre **1 e 3**, assim como as posições dos armários afetados. Por exemplo, uma partida pode ter 1 fio rompido, 3 alavancas desalinhadas e 2 ligações indevidas: seis armários com defeito. O circuito precisa ter pelo menos nove armários para comportar qualquer resultado; a cena atual tem 16. O antigo campo de quantidade fixa foi removido.
 
@@ -113,6 +130,11 @@ Os campos opcionais de sons, listas de luzes/objetos e eventos continuam reserva
 - **A interação em Play Mode e a aparência dentro da cena ainda precisam de validação.** A tentativa anterior de integração em uma cópia temporária da Unity foi impedida pela inicialização da licença. Os testes atuais executam as regras e o inventário real no Mono, sem simular uma sessão de Play Mode.
 - Os arquivos de teste, resultados, binários de verificação e a cópia temporária foram removidos ao finalizar esta etapa, conforme a regra do projeto. Os arquivos e caches preexistentes foram preservados. Nenhum comando Git foi executado.
 
-## Documentos anteriores
+## Outros documentos
 
-`docs/PuzzleEletrica.md` descreve a primeira versão, com defeitos fixos e reparo com cobre. `docs/PuzzleEletrica_EstadoEPlanejamento.md` preserva o diagnóstico e o planejamento anteriores a esta implementação. Para esta etapa, use o estado descrito neste arquivo.
+- [`PuzzleEletrica.md`](PuzzleEletrica.md): histórico da primeira versão, com
+  defeitos fixos e reparo exclusivamente com cobre.
+- [`PuzzleEletrica_EstadoEPlanejamento.md`](PuzzleEletrica_EstadoEPlanejamento.md):
+  decisões e propostas anteriores à implementação atual.
+- [`MontagemEletrica.md`](MontagemEletrica.md): ferramenta de Editor usada na
+  montagem física original dos armários e da tubulação.

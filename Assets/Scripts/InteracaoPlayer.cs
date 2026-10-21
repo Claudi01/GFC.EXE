@@ -82,6 +82,9 @@ public class InteracaoPlayer : MonoBehaviour
 
     private void TentarInteragir()
     {
+        if (controleItens != null && controleItens.EstaUsandoItem)
+            return;
+
         RaycastHit acerto;
         if (!TentarRaycast(out acerto))
             return;

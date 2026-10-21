@@ -1,6 +1,8 @@
-# Puzzle da elétrica — primeira versão
+# Histórico — puzzle da elétrica, primeira versão
 
-> Esta página descreve a versão original de reparos com cobre. A ativação pelo console, o sorteio, o circuito em sequência e as cores estão documentados em `docs/PuzzleEletrica_AtivacaoConsole.md`.
+> **Documento histórico, não é o guia para configurar a cena atual.** Ele descreve
+> a versão original, com defeitos fixos e reparo somente com cobre. Para o fluxo
+> vigente, consulte [`PuzzleEletrica_AtivacaoConsole.md`](PuzzleEletrica_AtivacaoConsole.md).
 
 Cada caixa defeituosa consome **uma unidade de fio de cobre**. As unidades ficam
 empilhadas em um espaço 1x1 da maleta. Lanterna, gancho e pé de cabra continuam

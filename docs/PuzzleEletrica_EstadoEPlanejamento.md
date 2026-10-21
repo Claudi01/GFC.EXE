@@ -1,6 +1,9 @@
-# Puzzle da elétrica — estado atual e planejamento
+# Histórico — planejamento anterior do puzzle da elétrica
 
-> Registro do diagnóstico e planejamento anterior à implementação do console. O estado atual desta primeira etapa está em `docs/PuzzleEletrica_AtivacaoConsole.md`; as seções abaixo preservam o contexto anterior e não devem ser lidas como uma nova verificação da cena.
+> **Documento histórico; não representa o estado atual do projeto.** Este plano foi
+> escrito antes da implementação do console e dos três tipos de reparo. Algumas
+> pendências registradas aqui já foram concluídas. Para o estado vigente, use
+> [`PuzzleEletrica_AtivacaoConsole.md`](PuzzleEletrica_AtivacaoConsole.md).
 
 Atualizado em **20/10/2026**. Cena: **Aréa de Carga**.
 

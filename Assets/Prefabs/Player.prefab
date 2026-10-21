@@ -420,6 +420,7 @@ GameObject:
   - component: {fileID: 6555130066389799823}
   - component: {fileID: 2339738239807500683}
   - component: {fileID: 1847382916}
+  - component: {fileID: 991630001}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -582,6 +583,31 @@ MonoBehaviour:
   ganchoNaMao: {fileID: 5006115736158904374}
   peDeCabraNaMao: {fileID: 1998520956142636673}
   itensAdicionais: []
+--- !u!114 &991630001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9002773722751999102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f05b397922ba4308afed8e17ae0f76fa, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::AtaquePeDeCabra
+  controleItens: {fileID: 2339738239807500683}
+  cameraJogador: {fileID: 3776420645457405631}
+  alcance: 2.2
+  camadasImpacto:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  tempoPreparo: 0.18
+  tempoGolpe: 0.12
+  tempoRetorno: 0.28
+  posicaoPreparo: {x: 0.04, y: -0.02, z: 0.12}
+  rotacaoPreparo: {x: -8, y: 0, z: -12}
+  posicaoImpacto: {x: -0.1, y: 0.12, z: 0.15}
+  rotacaoImpacto: {x: 50, y: 0, z: 25}
 --- !u!114 &1847382916
 MonoBehaviour:
   m_ObjectHideFlags: 0

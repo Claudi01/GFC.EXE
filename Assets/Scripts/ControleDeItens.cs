@@ -61,6 +61,33 @@ public class ControleDeItens : MonoBehaviour
     private readonly List<ConfiguracaoItemEquipavel> catalogo = new List<ConfiguracaoItemEquipavel>();
     private int itemEquipado = -1;
     private bool trocando;
+    private bool usandoItem;
+
+    public bool EstaUsandoItem => usandoItem;
+
+    public bool EstaEquipado(string id)
+    {
+        return !trocando && PodeEquipar(itemEquipado) &&
+               string.Equals(catalogo[itemEquipado].Id, id, StringComparison.OrdinalIgnoreCase);
+    }
+
+    // O uso e a troca compartilham o mesmo visual: nunca podem acontecer juntos.
+    public bool TentarIniciarUso(string id, out Transform visual)
+    {
+        visual = null;
+        if (usandoItem || !EstaEquipado(id) ||
+            (GameplayState.Instancia != null && GameplayState.Instancia.EstaBloqueado))
+            return false;
+
+        visual = catalogo[itemEquipado].objetoNaMao.transform;
+        usandoItem = true;
+        return true;
+    }
+
+    public void EncerrarUso()
+    {
+        usandoItem = false;
+    }
 
     private void Awake()
     {
@@ -90,7 +117,7 @@ public class ControleDeItens : MonoBehaviour
         if (GameplayState.Instancia != null && GameplayState.Instancia.EstaBloqueado)
             return;
 
-        if (trocando || catalogo.Count <= 1)
+        if (trocando || usandoItem || catalogo.Count <= 1)
             return;
 
         float scroll = Input.GetAxis("Mouse ScrollWheel");
@@ -168,7 +195,7 @@ public class ControleDeItens : MonoBehaviour
     public bool EquiparItem(string id)
     {
         int alvo = EncontrarIndice(id);
-        if (!PodeEquipar(alvo) || trocando)
+        if (!PodeEquipar(alvo) || trocando || usandoItem)
             return false;
 
         if (itemEquipado == alvo)

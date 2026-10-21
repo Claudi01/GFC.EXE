@@ -1,5 +1,10 @@
 # Popular a elétrica com os armários e canos existentes
 
+> Guia da ferramenta de montagem física original. A cena já está populada e foi
+> reorganizada depois desta montagem; consulte [`PuzzleEletrica_AtivacaoConsole.md`](PuzzleEletrica_AtivacaoConsole.md)
+> para os nomes e IDs atuais. Não execute o comando de montagem novamente se o
+> grupo `Eletrica_Armarios_Adicionados` já existir.
+
 A ferramenta fica em **Tools > GFC > Eletrica**. Ela só executa quando você
 escolhe um comando: não altera a cena ao compilar ou ao dar Play.
 
