@@ -421,6 +421,8 @@ GameObject:
   - component: {fileID: 2339738239807500683}
   - component: {fileID: 1847382916}
   - component: {fileID: 991630001}
+  - component: {fileID: 548129331806240157}
+  - component: {fileID: 548129331806240158}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -597,6 +599,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AtaquePeDeCabra
   controleItens: {fileID: 2339738239807500683}
   cameraJogador: {fileID: 3776420645457405631}
+  sonsChapaMetal:
+  - {fileID: 8300000, guid: eb75065da1b19414989a1ede29bc58b3, type: 3}
+  - {fileID: 8300000, guid: 6a938e6bded164e438bfc3ecaa4fb960, type: 3}
+  - {fileID: 8300000, guid: a83fa42a6ea070a45a870fa2db73e378, type: 3}
+  - {fileID: 8300000, guid: 7b71e2588fc90e243be9cfea52c7d00d, type: 3}
+  sonsFerroMacico:
+  - {fileID: 8300000, guid: c469311b65f999545aee7ca4c4ff6f7e, type: 3}
+  - {fileID: 8300000, guid: b20433c772a6cff408cf4196a0ed4a8c, type: 3}
+  - {fileID: 8300000, guid: 34e4069186edc154eacea9ae5bc439b0, type: 3}
+  - {fileID: 8300000, guid: 12c424da11d081f488e8439294c7252d, type: 3}
+  sonsPortaEnferrujada:
+  - {fileID: 8300000, guid: e0a58db27983a704d95f7a5f0f9c7433, type: 3}
+  - {fileID: 8300000, guid: 2ad2cbbfdb5fd97488eb95fbc366a694, type: 3}
+  - {fileID: 8300000, guid: c8c0795e9205aec40b57813b600d7fb3, type: 3}
+  - {fileID: 8300000, guid: 125547ed06b221642826b44ee219262a, type: 3}
+  sonsMadeira:
+  - {fileID: 8300000, guid: b0073ea6072ec324ebc01682fe448580, type: 3}
+  - {fileID: 8300000, guid: 27802d70decb0c744a78b22012d0d7dd, type: 3}
+  - {fileID: 8300000, guid: 622b083b73300024d91e47c8845bb29d, type: 3}
+  sonsConcreto:
+  - {fileID: 8300000, guid: 82669a333f46b1b4289ea4f846806585, type: 3}
+  - {fileID: 8300000, guid: 78a88fd25c102b24986ce07fd514a2df, type: 3}
+  - {fileID: 8300000, guid: 31276822b252547429a49f3390a715a3, type: 3}
   alcance: 2.2
   camadasImpacto:
     serializedVersion: 2
@@ -943,3 +968,98 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b78c90cbdd0df444298e5d9aff854415, type: 3}
   m_PrefabInstance: {fileID: 7854847565832772204}
   m_PrefabAsset: {fileID: 0}
+
+--- !u!114 &548129331806240157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9002773722751999102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d17c8d321ff4da9a7efce591c7b61a2, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::AudioAmbientePraia
+  chuvaVentoPraia: {fileID: 8300000, guid: 220944b94cb04f0428294d16474e643c, type: 3}
+  ondasDoMar: {fileID: 8300000, guid: ccb6ed2a854473e42bd8b65f1905d8b0, type: 3}
+  chuvaNoCascoEMar: {fileID: 8300000, guid: 6f9d0c9c3683a0d4ab2c1582d1181087, type: 3}
+  volumeChuvaVentoPraia: 0.72
+  volumeOndas: 0.6
+  volumeNavio: 0.78
+  distanciaInicioOndas: 110
+  distanciaOndasCompletas: 55
+  distanciaInicioNavio: 18
+  distanciaNavioCompleto: 4
+--- !u!114 &548129331806240158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9002773722751999102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11ec6ca791a74b819f6e1fa588fbcac9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioMovimentoPlayer
+  passosAreia:
+  - {fileID: 8300000, guid: e9bf321c4767557db70983f1c11d5e16, type: 3}
+  - {fileID: 8300000, guid: ef4df45cea645da18eb92cf54ec54402, type: 3}
+  - {fileID: 8300000, guid: f6419d62b1c55402bbafad5b273fbca9, type: 3}
+  - {fileID: 8300000, guid: eaad7426bc995fb4bf26fbeb73374b44, type: 3}
+  passosTerraGrama:
+  - {fileID: 8300000, guid: e3f2308cfcae5945bc73606753ad998c, type: 3}
+  - {fileID: 8300000, guid: f980b9067c1953faa0b1da601d05da76, type: 3}
+  - {fileID: 8300000, guid: 3d51e6af73ec55e191d252a4ebe86b83, type: 3}
+  - {fileID: 8300000, guid: f799feee978e5b34a34c4b2fb476b84e, type: 3}
+  passosMetal:
+  - {fileID: 8300000, guid: 5fdfc7a0ec8b5a1dadbffdf315bcf681, type: 3}
+  - {fileID: 8300000, guid: 4c2e0827c54056598b8cc0376911258a, type: 3}
+  - {fileID: 8300000, guid: cfb59cf09bc25c2da5e57a8a17c6f98a, type: 3}
+  - {fileID: 8300000, guid: 070dd291215a5cf6bde88975bc241fc0, type: 3}
+  passosMadeira:
+  - {fileID: 8300000, guid: 6bfe304197b852338f5272236c33f7dc, type: 3}
+  - {fileID: 8300000, guid: 93a6b52a164f55f59e84ae5698e9fa13, type: 3}
+  - {fileID: 8300000, guid: af8d247b4caa5255a4d6bc8e84b58b2c, type: 3}
+  - {fileID: 8300000, guid: fd76123698de5947926f99898dbfc7be, type: 3}
+  passosConcretoPedra:
+  - {fileID: 8300000, guid: 54b5f3f30a2a5041b9decafe675bbc88, type: 3}
+  - {fileID: 8300000, guid: 08321832be91530a97c14727155b7dbc, type: 3}
+  - {fileID: 8300000, guid: c32854c18ac25e4e9bc95a794ef56299, type: 3}
+  - {fileID: 8300000, guid: a8a12f6262fc5bbebceb3a58826a04e7, type: 3}
+  passosAguaRasa:
+  - {fileID: 8300000, guid: 8d35f316fe275a828d0823c919fb01a0, type: 3}
+  - {fileID: 8300000, guid: ecebea283e26570a975c3ee6e156d915, type: 3}
+  - {fileID: 8300000, guid: 2f3b702237f454c4b9128ca8983e3e82, type: 3}
+  - {fileID: 8300000, guid: 51c3a2f429f4543bb71169eee2e00952, type: 3}
+  aterrissagensAreia:
+  - {fileID: 8300000, guid: 22ab63b3eb7d594aa356ff3c527b9115, type: 3}
+  - {fileID: 8300000, guid: a63faf86111556fdbbce05589277aea9, type: 3}
+  aterrissagensTerraGrama:
+  - {fileID: 8300000, guid: b2b335805c16585c98f6dc3e2a225720, type: 3}
+  - {fileID: 8300000, guid: 6c26f7bb979d5748a568720487ed4e23, type: 3}
+  aterrissagensMetal:
+  - {fileID: 8300000, guid: bcbf3e4d72de524e84977fb93bd2ff06, type: 3}
+  - {fileID: 8300000, guid: 83418863e1835e1d93118e3fdc1bc46a, type: 3}
+  aterrissagensMadeira:
+  - {fileID: 8300000, guid: cc1e09099d3e5ca3b0bb8296a39be57c, type: 3}
+  - {fileID: 8300000, guid: dddf06bed55453c6b9f73eaed618f2a0, type: 3}
+  aterrissagensConcretoPedra:
+  - {fileID: 8300000, guid: 8634598b915652ecad198ee5c7ed7f5f, type: 3}
+  - {fileID: 8300000, guid: 71fa853a1b115a7c8eecd17eafb86402, type: 3}
+  aterrissagensAguaRasa:
+  - {fileID: 8300000, guid: 3903314ca549575b9e334520ccec8c7d, type: 3}
+  - {fileID: 8300000, guid: 9d3e452ad0cc5224b104f8dae1b3a9ca, type: 3}
+  pulos:
+  - {fileID: 8300000, guid: e5fddc893967538ca1aa21def357121c, type: 3}
+  - {fileID: 8300000, guid: 4d3b927e7683592680aa6ebdd8320a67, type: 3}
+  escaladaCorda:
+  - {fileID: 8300000, guid: f2c532b779465c77b67fcf172b4a2e69, type: 3}
+  - {fileID: 8300000, guid: 0f4ab7e4d30254bd98ec533b5ec715d1, type: 3}
+  - {fileID: 8300000, guid: 1cc987c2c8405b4dbc43c0c6fa178c6e, type: 3}
+  distanciaEntrePassos: 1.7
+  volumePassos: 0.75
+  volumePulo: 0.55
+  volumeAterrissagem: 0.75
+  volumeCorda: 0.7

@@ -1,0 +1,24 @@
+GFC.EXE — ÁUDIO ATUAL DA PRAIA
+
+O percurso da cena Praia usa os novos arquivos em Assets/Sons/Praia_v3.
+São gravações CC0 editadas. Fontes/licenças: Praia_v3/FONTES_E_LICENCAS.md.
+Descrição completa da aplicação: Praia_v3/APLICACAO_PRAIA.md.
+
+PERCURSO
+- Floresta: chuva nas folhas e vento nas árvores em volume baixo.
+- Dentro da Tent/cabana: ambiente mais silencioso, com agudos filtrados.
+- Diário: abrir não quebra o bote. O primeiro comando para fechar toca madeira quebrando ao longe, nos destroços.
+- Areia: a textura pintada real do Terrain muda os passos e permite os pingos no casco.
+- Aproximação dos destroços: entra o mar agitado, moderado.
+- Gancho: o arremesso toca com a tela preta antes de continuar a transição.
+- Ao carregar outra cena, o ambiente da Praia para.
+
+AJUSTES
+Selecione o Player na Hierarchy da cena Praia. AudioAmbientePraia contém os níveis e as referências de ambiente; AudioMovimentoPlayer contém os passos e volumes de ações.
+Audio_Praia/Cabana - chuva abafada delimita o abrigo. O diário recebe o novo clipe pelo override na instância da Praia. Gatilho_Escalada/TransicaoCena recebe o arremesso.
+
+As alterações de clipes e volumes são overrides da cena Praia. Os prefabs compartilhados e o arquivo da Aréa de Carga ficam preservados.
+
+LOTES ANTERIORES
+Ambientes, Bote, PeDeCabra, Passos e Movimento fora da pasta Praia_v3 são os lotes anteriores. Foram mantidos para referência e para as cenas que ainda não foram retrabalhadas.
+manifest.json descreve o lote original de 28 arquivos. catalogo_v2.json descreve os 42 efeitos do segundo lote. Praia_v3/catalogo.json descreve os novos arquivos usados neste percurso.

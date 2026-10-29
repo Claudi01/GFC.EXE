@@ -8,6 +8,7 @@ public class MecanicaEscalada : MonoBehaviour
 
     private bool transicaoIniciada;
     private TransicaoCena transicaoCena;
+    private AudioMovimentoPlayer audioEscalada;
 
     [Header("Item consumido")]
     public string idItemConsumido = "gancho";
@@ -77,15 +78,24 @@ public class MecanicaEscalada : MonoBehaviour
         }
 
         EstadoMundo.MarcarConcluido(ChaveGanchoUsado);
-        transicaoCena.IniciarTransicao();
+        audioEscalada = Object.FindFirstObjectByType<AudioMovimentoPlayer>();
+        if (audioEscalada != null && transicaoCena.somAoEscurecer == null) audioEscalada.IniciarEscalada();
+        if (!transicaoCena.IniciarTransicao())
+            FalharEscalada("Nao foi possivel iniciar a transicao de escalada.");
     }
 
     private void FalharEscalada(string mensagem)
     {
+        if (audioEscalada != null) audioEscalada.PararEscalada();
         transicaoIniciada = false;
         if (GameplayState.Instancia != null)
             GameplayState.Instancia.Liberar(GameplayBlockReason.TransicaoCena);
 
         Debug.LogError(mensagem, this);
+    }
+
+    private void OnDisable()
+    {
+        if (audioEscalada != null) audioEscalada.PararEscalada();
     }
 }

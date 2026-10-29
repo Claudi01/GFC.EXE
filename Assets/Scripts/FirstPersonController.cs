@@ -17,12 +17,14 @@ public class FirstPersonController : MonoBehaviour
     public float lookXLimit = 90.0f;
 
     private CharacterController characterController;
+    private AudioMovimentoPlayer audioMovimento;
     private Vector3 moveDirection = Vector3.zero;
     private float rotationX = 0f;
 
     void Start()
     {
         characterController = GetComponent<CharacterController>();
+        audioMovimento = GetComponent<AudioMovimentoPlayer>();
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -30,8 +32,17 @@ public class FirstPersonController : MonoBehaviour
 
     void Update()
     {
-        if (GameplayState.Instancia != null && GameplayState.Instancia.EstaBloqueado)
+        if (characterController == null || !characterController.enabled)
+        {
+            if (audioMovimento != null) audioMovimento.SuspenderMovimento();
             return;
+        }
+        if (Time.deltaTime <= 0f ||
+            (GameplayState.Instancia != null && GameplayState.Instancia.EstaBloqueado))
+        {
+            if (audioMovimento != null) audioMovimento.PausarCadencia();
+            return;
+        }
 
         // --- 1. LOOK WITH THE CAMERA ---
         rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
@@ -78,19 +89,29 @@ public class FirstPersonController : MonoBehaviour
         moveDirection.z = movimentoNoChao.z;
 
         // --- 4. JUMP ---
+        bool pulou = false;
         if (estaNoChao && Input.GetKeyDown(KeyCode.Space))
         {
             moveDirection.y = Mathf.Sqrt(
                 jumpHeight * -2f * gravity
             );
+            pulou = true;
+            if (audioMovimento != null) audioMovimento.TocarPulo();
         }
 
         // --- 5. GRAVITY ---
         moveDirection.y += gravity * Time.deltaTime;
 
         // --- 6. APPLY MOVEMENT ---
-        characterController.Move(
+        Vector3 posicaoAntes = transform.position;
+        CollisionFlags contatos = characterController.Move(
             moveDirection * Time.deltaTime
         );
+        if (audioMovimento != null)
+        {
+            bool chaoDepois = (contatos & CollisionFlags.Below) != 0 || characterController.isGrounded;
+            audioMovimento.RegistrarMovimento(posicaoAntes, transform.position, estaNoChao,
+                chaoDepois, pulou, moveDirection.y);
+        }
     }
 }

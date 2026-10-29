@@ -6,86 +6,75 @@ public class MecanicaDiario : MonoBehaviour
     [Header("Interface UI")]
     public GameObject telaDiario;
     public GameObject telaPreta;
-    public GameObject textoUIInteracao; // NOVO: A marreta da UI
+    public GameObject textoUIInteracao;
     private FaderScript fader;
-
-    [Header("Referências do Player")]
-    public MonoBehaviour scriptMovimento; 
-    public MonoBehaviour scriptOlharCamera; // NOVO: A marreta do Mouse
+    [Header("Referencias do Player")]
+    public MonoBehaviour scriptMovimento;
+    public MonoBehaviour scriptOlharCamera;
     public InteracaoPlayer scriptInteracao;
-
-    [Header("A Mágica do Bote & Itens")]
+    [Header("Bote e itens")]
     public GameObject boteInteiro;
     public GameObject boteDestruido;
     public GameObject ganchoEscalada;
     public AudioSource somImpacto;
-
+    [SerializeField] private AudioClip audioQuedaBote;
+    [SerializeField, Range(0f, 1f)] private float volumeQuebraBote = 0.6f;
     [Header("Persistencia do evento")]
-    [Tooltip("Chave unica do evento deste diario no progresso da partida.")]
     public string chaveEvento = "gfc.evento.diario.bote";
+    private bool lendo, jaCaiu, emTransicao;
 
-    private bool lendo = false;
-    private bool jaCaiu = false;
-    private bool emTransicao = false;
-
-    void Start()
+    private void Start()
     {
+        ConfigurarSomBote();
         if (telaPreta != null) fader = telaPreta.GetComponent<FaderScript>();
-
         jaCaiu = EstadoMundo.EstaConcluido(chaveEvento);
-        if (jaCaiu)
-            AplicarEstadoBote();
-        
-        if (scriptMovimento == null)
-        {
-            scriptMovimento = Object.FindFirstObjectByType<FirstPersonController>();
-        }
-
-        if (scriptInteracao == null)
-        {
-            scriptInteracao = Object.FindFirstObjectByType<InteracaoPlayer>();
-        }
+        if (jaCaiu) AplicarEstadoBote();
+        if (scriptMovimento == null) scriptMovimento = Object.FindFirstObjectByType<FirstPersonController>();
+        if (scriptInteracao == null) scriptInteracao = Object.FindFirstObjectByType<InteracaoPlayer>();
     }
 
-    void Update()
+    private void ConfigurarSomBote()
     {
-        if (lendo && !emTransicao && Input.GetKeyDown(KeyCode.E))
-        {
-            StartCoroutine(FecharProcesso());
-        }
+        GameObject origem = new GameObject("Audio - Madeira quebrando ao longe");
+        origem.transform.SetParent(transform, false);
+        origem.transform.position = boteDestruido != null ? boteDestruido.transform.position : transform.position;
+        somImpacto = origem.AddComponent<AudioSource>();
+        somImpacto.playOnAwake = false;
+        somImpacto.loop = false;
+        somImpacto.spatialBlend = 1f;
+        somImpacto.dopplerLevel = 0f;
+        somImpacto.priority = 40;
+        somImpacto.volume = volumeQuebraBote;
+        somImpacto.minDistance = 12f;
+        somImpacto.maxDistance = 220f;
+        somImpacto.rolloffMode = AudioRolloffMode.Custom;
+        somImpacto.SetCustomCurve(AudioSourceCurveType.CustomRolloff, new AnimationCurve(
+            new Keyframe(0f, 1f), new Keyframe(0.55f, 0.38f), new Keyframe(1f, 0f)));
+        AudioLowPassFilter distancia = origem.AddComponent<AudioLowPassFilter>();
+        distancia.cutoffFrequency = 3800f;
+        if (audioQuedaBote != null) audioQuedaBote.LoadAudioData();
+    }
+
+    private void Update()
+    {
+        if (lendo && !emTransicao && Input.GetKeyDown(KeyCode.E)) StartCoroutine(FecharProcesso());
     }
 
     public void Interagir()
     {
         if (fader == null || emTransicao) return;
-        
         if (!lendo) StartCoroutine(AbrirProcesso());
     }
 
-    void AlternarControlePlayer(bool estado)
+    private void AlternarControlePlayer(bool estado)
     {
-        // 1. Desliga o movimento do corpo
         if (GameplayState.Instancia != null)
         {
-            if (estado)
-                GameplayState.Instancia.Liberar(GameplayBlockReason.Diario);
-            else
-                GameplayState.Instancia.Bloquear(GameplayBlockReason.Diario);
+            if (estado) GameplayState.Instancia.Liberar(GameplayBlockReason.Diario);
+            else GameplayState.Instancia.Bloquear(GameplayBlockReason.Diario);
         }
-
-        // 2. Desliga o giro da câmera na força bruta
-        // O movimento e a camera obedecem ao bloqueio central.
-
-        // 3. Desliga o sistema de interação invisível
-        if (scriptInteracao != null)
-        {
-            scriptInteracao.EsconderTexto();
-        }
-
-        // 4. Apaga o texto "Ler" direto na raiz
+        if (scriptInteracao != null) scriptInteracao.EsconderTexto();
         if (textoUIInteracao != null) textoUIInteracao.SetActive(estado);
-
-        // 5. Solta o mouse para clicar na tela se precisar (ou só trava)
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -97,39 +86,36 @@ public class MecanicaDiario : MonoBehaviour
         if (ganchoEscalada != null) ganchoEscalada.SetActive(true);
     }
 
-    IEnumerator AbrirProcesso()
+    private void QuebrarBoteAoFechar()
+    {
+        if (jaCaiu) return;
+        AplicarEstadoBote();
+        if (somImpacto != null && audioQuedaBote != null) somImpacto.PlayOneShot(audioQuedaBote);
+        jaCaiu = true;
+        EstadoMundo.MarcarConcluido(chaveEvento);
+    }
+
+    private IEnumerator AbrirProcesso()
     {
         emTransicao = true;
         lendo = true;
-        AlternarControlePlayer(false); 
-        
+        AlternarControlePlayer(false);
         telaPreta.SetActive(true);
         yield return StartCoroutine(fader.FazerFade(true));
         telaDiario.SetActive(true);
         yield return StartCoroutine(fader.FazerFade(false));
-        
         emTransicao = false;
     }
 
-    IEnumerator FecharProcesso()
+    private IEnumerator FecharProcesso()
     {
         emTransicao = true;
-        
+        QuebrarBoteAoFechar();
         yield return StartCoroutine(fader.FazerFade(true));
         telaDiario.SetActive(false);
-
-        if (!jaCaiu)
-        {
-            AplicarEstadoBote();
-            if (somImpacto != null) somImpacto.Play();
-            EstadoMundo.MarcarConcluido(chaveEvento);
-            jaCaiu = true;
-        }
-
         yield return StartCoroutine(fader.FazerFade(false));
         telaPreta.SetActive(false);
-        
-        AlternarControlePlayer(true); 
+        AlternarControlePlayer(true);
         lendo = false;
         emTransicao = false;
     }

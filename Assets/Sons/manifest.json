@@ -1,0 +1,166 @@
+{
+  "sample_rate_hz": 48000,
+  "encoding": "PCM",
+  "bit_depth": 24,
+  "asset_count": 28,
+  "groups": {
+    "Ambientes/01_Praia": [
+      "Ambientes/01_Praia_Chuva_Vento_Arvores_LOOP_60s.wav",
+      "Ambientes/STEM_Chuva_Praia_LOOP_60s.wav",
+      "Ambientes/STEM_Vento_Arvores_LOOP_60s.wav",
+      "Ambientes/STEM_Mar_Ondas_LOOP_60s.wav"
+    ],
+    "Ambientes/02_Proximo_Navio": [
+      "Ambientes/03_Navio_Chuva_Casco_Mar_LOOP_60s.wav",
+      "Ambientes/STEM_Chuva_Casco_MONO_LOOP_60s.wav"
+    ],
+    "Bote": [
+      "Bote/SFX_Bote_Queda_Completa_Impacto_1p25s.wav",
+      "Bote/SFX_Bote_Madeira_Areia_Impacto_01.wav",
+      "Bote/SFX_Bote_Madeira_Areia_Impacto_02.wav",
+      "Bote/SFX_Bote_Madeira_Areia_Impacto_03.wav"
+    ],
+    "PeDeCabra/ChapaMetal": [
+      "Impactos/ChapaMetal/SFX_PeDeCabra_ChapaMetal_01.wav",
+      "Impactos/ChapaMetal/SFX_PeDeCabra_ChapaMetal_02.wav",
+      "Impactos/ChapaMetal/SFX_PeDeCabra_ChapaMetal_03.wav",
+      "Impactos/ChapaMetal/SFX_PeDeCabra_ChapaMetal_04.wav"
+    ],
+    "PeDeCabra/FerroMacico": [
+      "Impactos/FerroMacico/SFX_PeDeCabra_FerroMacico_01.wav",
+      "Impactos/FerroMacico/SFX_PeDeCabra_FerroMacico_02.wav",
+      "Impactos/FerroMacico/SFX_PeDeCabra_FerroMacico_03.wav",
+      "Impactos/FerroMacico/SFX_PeDeCabra_FerroMacico_04.wav"
+    ],
+    "PeDeCabra/PortaEnferrujada": [
+      "Impactos/PortaEnferrujada/SFX_PeDeCabra_PortaEnferrujada_01.wav",
+      "Impactos/PortaEnferrujada/SFX_PeDeCabra_PortaEnferrujada_02.wav",
+      "Impactos/PortaEnferrujada/SFX_PeDeCabra_PortaEnferrujada_03.wav",
+      "Impactos/PortaEnferrujada/SFX_PeDeCabra_PortaEnferrujada_04.wav"
+    ],
+    "PeDeCabra/Madeira": [
+      "Impactos/Madeira/SFX_PeDeCabra_Madeira_01.wav",
+      "Impactos/Madeira/SFX_PeDeCabra_Madeira_02.wav",
+      "Impactos/Madeira/SFX_PeDeCabra_Madeira_03.wav"
+    ],
+    "PeDeCabra/Concreto": [
+      "Impactos/Concreto/SFX_PeDeCabra_Concreto_01.wav",
+      "Impactos/Concreto/SFX_PeDeCabra_Concreto_02.wav",
+      "Impactos/Concreto/SFX_PeDeCabra_Concreto_03.wav"
+    ]
+  },
+  "files": [
+    {
+      "path": "Ambientes/01_Praia/01_Praia_Chuva_Vento_Arvores_LOOP_60s.wav",
+      "bytes": 17280044
+    },
+    {
+      "path": "Ambientes/01_Praia/STEM_Chuva_Praia_LOOP_60s.wav",
+      "bytes": 17280044
+    },
+    {
+      "path": "Ambientes/01_Praia/STEM_Vento_Arvores_LOOP_60s.wav",
+      "bytes": 17280044
+    },
+    {
+      "path": "Ambientes/01_Praia/STEM_Mar_Ondas_LOOP_60s.wav",
+      "bytes": 17280044
+    },
+    {
+      "path": "Ambientes/02_Proximo_Navio/03_Navio_Chuva_Casco_Mar_LOOP_60s.wav",
+      "bytes": 17280044
+    },
+    {
+      "path": "Ambientes/02_Proximo_Navio/STEM_Chuva_Casco_MONO_LOOP_60s.wav",
+      "bytes": 8640044
+    },
+    {
+      "path": "Bote/SFX_Bote_Queda_Completa_Impacto_1p25s.wav",
+      "bytes": 619244
+    },
+    {
+      "path": "Bote/SFX_Bote_Madeira_Areia_Impacto_01.wav",
+      "bytes": 403244
+    },
+    {
+      "path": "Bote/SFX_Bote_Madeira_Areia_Impacto_02.wav",
+      "bytes": 403244
+    },
+    {
+      "path": "Bote/SFX_Bote_Madeira_Areia_Impacto_03.wav",
+      "bytes": 403244
+    },
+    {
+      "path": "PeDeCabra/ChapaMetal/SFX_PeDeCabra_ChapaMetal_01.wav",
+      "bytes": 295244
+    },
+    {
+      "path": "PeDeCabra/ChapaMetal/SFX_PeDeCabra_ChapaMetal_02.wav",
+      "bytes": 309644
+    },
+    {
+      "path": "PeDeCabra/ChapaMetal/SFX_PeDeCabra_ChapaMetal_03.wav",
+      "bytes": 280844
+    },
+    {
+      "path": "PeDeCabra/ChapaMetal/SFX_PeDeCabra_ChapaMetal_04.wav",
+      "bytes": 324044
+    },
+    {
+      "path": "PeDeCabra/FerroMacico/SFX_PeDeCabra_FerroMacico_01.wav",
+      "bytes": 165644
+    },
+    {
+      "path": "PeDeCabra/FerroMacico/SFX_PeDeCabra_FerroMacico_02.wav",
+      "bytes": 172844
+    },
+    {
+      "path": "PeDeCabra/FerroMacico/SFX_PeDeCabra_FerroMacico_03.wav",
+      "bytes": 158444
+    },
+    {
+      "path": "PeDeCabra/FerroMacico/SFX_PeDeCabra_FerroMacico_04.wav",
+      "bytes": 187244
+    },
+    {
+      "path": "PeDeCabra/PortaEnferrujada/SFX_PeDeCabra_PortaEnferrujada_01.wav",
+      "bytes": 324044
+    },
+    {
+      "path": "PeDeCabra/PortaEnferrujada/SFX_PeDeCabra_PortaEnferrujada_02.wav",
+      "bytes": 331244
+    },
+    {
+      "path": "PeDeCabra/PortaEnferrujada/SFX_PeDeCabra_PortaEnferrujada_03.wav",
+      "bytes": 309644
+    },
+    {
+      "path": "PeDeCabra/PortaEnferrujada/SFX_PeDeCabra_PortaEnferrujada_04.wav",
+      "bytes": 345644
+    },
+    {
+      "path": "PeDeCabra/Madeira/SFX_PeDeCabra_Madeira_01.wav",
+      "bytes": 144044
+    },
+    {
+      "path": "PeDeCabra/Madeira/SFX_PeDeCabra_Madeira_02.wav",
+      "bytes": 165644
+    },
+    {
+      "path": "PeDeCabra/Madeira/SFX_PeDeCabra_Madeira_03.wav",
+      "bytes": 129644
+    },
+    {
+      "path": "PeDeCabra/Concreto/SFX_PeDeCabra_Concreto_01.wav",
+      "bytes": 115244
+    },
+    {
+      "path": "PeDeCabra/Concreto/SFX_PeDeCabra_Concreto_02.wav",
+      "bytes": 129644
+    },
+    {
+      "path": "PeDeCabra/Concreto/SFX_PeDeCabra_Concreto_03.wav",
+      "bytes": 100844
+    }
+  ]
+}

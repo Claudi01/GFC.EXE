@@ -5,6 +5,12 @@ public class AtaquePeDeCabra : MonoBehaviour
 {
     [SerializeField] private ControleDeItens controleItens;
     [SerializeField] private Camera cameraJogador;
+    [Header("Sons de impacto por superficie")]
+    [SerializeField] private AudioClip[] sonsChapaMetal;
+    [SerializeField] private AudioClip[] sonsFerroMacico;
+    [SerializeField] private AudioClip[] sonsPortaEnferrujada;
+    [SerializeField] private AudioClip[] sonsMadeira;
+    [SerializeField] private AudioClip[] sonsConcreto;
     [Header("Impacto")]
     [SerializeField, Min(0.1f)] private float alcance = 2.2f;
     [SerializeField] private LayerMask camadasImpacto = ~0;
@@ -30,6 +36,7 @@ public class AtaquePeDeCabra : MonoBehaviour
     private bool acertou;
     private bool atingiuSuperficie;
     private bool golpeEmAndamento;
+    private readonly int[] ultimoSomPorSuperficie = { -1, -1, -1, -1, -1 };
     public bool GolpeEmAndamento => golpeEmAndamento;
 
     private void Awake()
@@ -147,6 +154,7 @@ public class AtaquePeDeCabra : MonoBehaviour
         foreach (RaycastHit acerto in acertos)
         {
             if (acerto.collider.transform.IsChildOf(transform)) continue;
+            TocarSomDeImpacto(acerto);
             QuebravelCenario alvo = acerto.collider.GetComponentInParent<QuebravelCenario>();
             if (alvo != null) alvo.ReceberImpacto();
             return true;
@@ -154,7 +162,70 @@ public class AtaquePeDeCabra : MonoBehaviour
         return false;
     }
 
-    private void CancelarGolpe()
+    private void TocarSomDeImpacto(RaycastHit hit)
+    {
+        AudioClip[] variacoes = ObterSons(ClassificarSuperficie(hit.collider));
+        if (variacoes == null || variacoes.Length == 0) return;
+
+        int tipo = (int)ClassificarSuperficie(hit.collider);
+        int indice = Random.Range(0, variacoes.Length);
+        if (variacoes.Length > 1 && indice == ultimoSomPorSuperficie[tipo])
+            indice = (indice + Random.Range(1, variacoes.Length)) % variacoes.Length;
+        ultimoSomPorSuperficie[tipo] = indice;
+
+        AudioClip clip = variacoes[indice];
+        if (clip != null) AudioSource.PlayClipAtPoint(clip, hit.point, 0.7f);
+    }
+
+    private enum SuperficieImpacto
+    {
+        ChapaMetal = 0,
+        FerroMacico = 1,
+        PortaEnferrujada = 2,
+        Madeira = 3,
+        Concreto = 4
+    }
+
+    private SuperficieImpacto ClassificarSuperficie(Collider collider)
+    {
+        if (collider.GetComponentInParent<PortaEmperrada>() != null)
+            return SuperficieImpacto.PortaEnferrujada;
+
+        string nomes = string.Empty;
+        Transform atual = collider.transform;
+        while (atual != null)
+        {
+            nomes += " " + atual.name.ToLowerInvariant();
+            atual = atual.parent;
+        }
+
+        if (nomes.Contains("enferruj") || nomes.Contains("rust"))
+            return SuperficieImpacto.PortaEnferrujada;
+        if (nomes.Contains("madeira") || nomes.Contains("wood") || nomes.Contains("bote") || nomes.Contains("boat"))
+            return SuperficieImpacto.Madeira;
+        if (nomes.Contains("concreto") || nomes.Contains("concrete") || nomes.Contains("cimento") ||
+            nomes.Contains("pedra") || nomes.Contains("stone"))
+            return SuperficieImpacto.Concreto;
+        if (nomes.Contains("chapa") || nomes.Contains("metal") || nomes.Contains("sheet") ||
+            nomes.Contains("plate") || nomes.Contains("porta"))
+            return SuperficieImpacto.ChapaMetal;
+
+        // A maioria dos alvos quebraveis do jogo e metal/ferro.
+        return SuperficieImpacto.FerroMacico;
+    }
+
+    private AudioClip[] ObterSons(SuperficieImpacto superficie)
+    {
+        switch (superficie)
+        {
+            case SuperficieImpacto.ChapaMetal: return sonsChapaMetal;
+            case SuperficieImpacto.FerroMacico: return sonsFerroMacico;
+            case SuperficieImpacto.PortaEnferrujada: return sonsPortaEnferrujada;
+            case SuperficieImpacto.Madeira: return sonsMadeira;
+            case SuperficieImpacto.Concreto: return sonsConcreto;
+            default: return null;
+        }
+    }    private void CancelarGolpe()
     {
         if (!golpeEmAndamento) return;
         if (visual != null)

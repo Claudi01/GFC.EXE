@@ -1,0 +1,366 @@
+{
+  "version": 3,
+  "scope": "Praia only",
+  "encoding": "PCM16",
+  "sample_rate_hz": 48000,
+  "provenance": "Gravações de campo e Foley CC0 editadas; sem síntese procedural.",
+  "clips": [
+    {
+      "role": "rain",
+      "path": "Ambientes/Chuva_Folhas_Real_LOOP_30s.wav",
+      "guid": "0b30a3395d955b1883cc6a73f8f1b8bf",
+      "duration_seconds": 30.0,
+      "channels": 2,
+      "rms_dbfs": -30.0,
+      "peak_dbfs": -14.14,
+      "sources": [
+        "forest_rain"
+      ],
+      "processing": "Trecho da gravação; filtro suave; junção com crossfade de 1s; ganho contido."
+    },
+    {
+      "role": "wind",
+      "path": "Ambientes/Vento_Arvores_Real_LOOP_30s.wav",
+      "guid": "9c63685d573251a3bdbec2a2ed87c66e",
+      "duration_seconds": 30.0,
+      "channels": 2,
+      "rms_dbfs": -32.0,
+      "peak_dbfs": -12.31,
+      "sources": [
+        "tree_wind"
+      ],
+      "processing": "Trecho da gravação; filtro suave; junção com crossfade de 1s; ganho contido."
+    },
+    {
+      "role": "sea",
+      "path": "Ambientes/Mar_Ondas_Real_LOOP_30s.wav",
+      "guid": "20a763bc211059729f01087d9c1b3c21",
+      "duration_seconds": 30.0,
+      "channels": 2,
+      "rms_dbfs": -30.0,
+      "peak_dbfs": -12.55,
+      "sources": [
+        "sea_waves"
+      ],
+      "processing": "Trecho da gravação; filtro suave; junção com crossfade de 1s; ganho contido."
+    },
+    {
+      "role": "hull",
+      "path": "Ambientes/Pingos_Metal_Real_LOOP_30s.wav",
+      "guid": "24f5ddeaeec051fc82e262a76d404af4",
+      "duration_seconds": 30.0,
+      "channels": 2,
+      "rms_dbfs": -32.0,
+      "peak_dbfs": -17.35,
+      "sources": [
+        "metal_rain"
+      ],
+      "processing": "Trecho da gravação; filtro suave; junção com crossfade de 1s; ganho contido."
+    },
+    {
+      "role": "step_grass",
+      "path": "Passos/GramaTerra/Passo_GramaTerra_Real_01.wav",
+      "guid": "f1c2528d26bc5d0ea9914e024503b036",
+      "duration_seconds": 0.46,
+      "channels": 1,
+      "rms_dbfs": -29.0,
+      "peak_dbfs": -17.1,
+      "sources": [
+        "grass_steps"
+      ],
+      "processing": "Passo individual recortado da gravação, centro 5.26s; fades curtos; sem mudança de pitch."
+    },
+    {
+      "role": "step_grass",
+      "path": "Passos/GramaTerra/Passo_GramaTerra_Real_02.wav",
+      "guid": "3328c95e30ab58208f5d2d2740746326",
+      "duration_seconds": 0.46,
+      "channels": 1,
+      "rms_dbfs": -29.0,
+      "peak_dbfs": -16.19,
+      "sources": [
+        "grass_steps"
+      ],
+      "processing": "Passo individual recortado da gravação, centro 7.54s; fades curtos; sem mudança de pitch."
+    },
+    {
+      "role": "step_grass",
+      "path": "Passos/GramaTerra/Passo_GramaTerra_Real_03.wav",
+      "guid": "65660e0df2fc573e99761527ba24f96d",
+      "duration_seconds": 0.46,
+      "channels": 1,
+      "rms_dbfs": -29.0,
+      "peak_dbfs": -16.68,
+      "sources": [
+        "grass_steps"
+      ],
+      "processing": "Passo individual recortado da gravação, centro 8.72s; fades curtos; sem mudança de pitch."
+    },
+    {
+      "role": "step_grass",
+      "path": "Passos/GramaTerra/Passo_GramaTerra_Real_04.wav",
+      "guid": "4f748c5519e75ea2a822e9732116ac3d",
+      "duration_seconds": 0.46,
+      "channels": 1,
+      "rms_dbfs": -29.0,
+      "peak_dbfs": -16.62,
+      "sources": [
+        "grass_steps"
+      ],
+      "processing": "Passo individual recortado da gravação, centro 17.89s; fades curtos; sem mudança de pitch."
+    },
+    {
+      "role": "step_sand",
+      "path": "Passos/Areia/Passo_Areia_Real_01.wav",
+      "guid": "278c7cc5c2285ca68dd85f05e96e911c",
+      "duration_seconds": 0.46,
+      "channels": 1,
+      "rms_dbfs": -29.0,
+      "peak_dbfs": -14.27,
+      "sources": [
+        "sand_steps"
+      ],
+      "processing": "Passo individual recortado da gravação, centro 4.51s; fades curtos; sem mudança de pitch."
+    },
+    {
+      "role": "step_sand",
+      "path": "Passos/Areia/Passo_Areia_Real_02.wav",
+      "guid": "dcd155c63bd7589e9f905a1e983bd7b4",
+      "duration_seconds": 0.46,
+      "channels": 1,
+      "rms_dbfs": -29.0,
+      "peak_dbfs": -16.58,
+      "sources": [
+        "sand_steps"
+      ],
+      "processing": "Passo individual recortado da gravação, centro 9.52s; fades curtos; sem mudança de pitch."
+    },
+    {
+      "role": "step_sand",
+      "path": "Passos/Areia/Passo_Areia_Real_03.wav",
+      "guid": "38ba05e3ab735e10988b9ad8ea077938",
+      "duration_seconds": 0.46,
+      "channels": 1,
+      "rms_dbfs": -29.0,
+      "peak_dbfs": -15.04,
+      "sources": [
+        "sand_steps"
+      ],
+      "processing": "Passo individual recortado da gravação, centro 11.94s; fades curtos; sem mudança de pitch."
+    },
+    {
+      "role": "step_sand",
+      "path": "Passos/Areia/Passo_Areia_Real_04.wav",
+      "guid": "979e573fcc6f52ea93c282075b9996bd",
+      "duration_seconds": 0.46,
+      "channels": 1,
+      "rms_dbfs": -29.0,
+      "peak_dbfs": -15.7,
+      "sources": [
+        "sand_steps"
+      ],
+      "processing": "Passo individual recortado da gravação, centro 18.14s; fades curtos; sem mudança de pitch."
+    },
+    {
+      "role": "step_wood",
+      "path": "Passos/Madeira/Passo_Madeira_Real_01.wav",
+      "guid": "423cebfa1bfa5cd299019a2334b2a5a4",
+      "duration_seconds": 0.46,
+      "channels": 1,
+      "rms_dbfs": -29.0,
+      "peak_dbfs": -13.69,
+      "sources": [
+        "wood_steps"
+      ],
+      "processing": "Passo individual recortado da gravação, centro 0.96s; fades curtos; sem mudança de pitch."
+    },
+    {
+      "role": "step_wood",
+      "path": "Passos/Madeira/Passo_Madeira_Real_02.wav",
+      "guid": "2b6a50abf6175906829747cb1c475fc2",
+      "duration_seconds": 0.46,
+      "channels": 1,
+      "rms_dbfs": -29.0,
+      "peak_dbfs": -13.31,
+      "sources": [
+        "wood_steps"
+      ],
+      "processing": "Passo individual recortado da gravação, centro 13.63s; fades curtos; sem mudança de pitch."
+    },
+    {
+      "role": "step_wood",
+      "path": "Passos/Madeira/Passo_Madeira_Real_03.wav",
+      "guid": "d400e7df59ec5dceb4e3c4803babc10b",
+      "duration_seconds": 0.46,
+      "channels": 1,
+      "rms_dbfs": -29.0,
+      "peak_dbfs": -12.25,
+      "sources": [
+        "wood_steps"
+      ],
+      "processing": "Passo individual recortado da gravação, centro 16.36s; fades curtos; sem mudança de pitch."
+    },
+    {
+      "role": "step_wood",
+      "path": "Passos/Madeira/Passo_Madeira_Real_04.wav",
+      "guid": "3967034a32195810b42728e5ca5c6eb8",
+      "duration_seconds": 0.46,
+      "channels": 1,
+      "rms_dbfs": -29.0,
+      "peak_dbfs": -13.17,
+      "sources": [
+        "wood_steps"
+      ],
+      "processing": "Passo individual recortado da gravação, centro 20.42s; fades curtos; sem mudança de pitch."
+    },
+    {
+      "role": "boat",
+      "path": "Eventos/Bote_Madeira_Quebrando_Real.wav",
+      "guid": "aae6e85e3e2f52668bb7fe090f147682",
+      "duration_seconds": 1.55,
+      "channels": 1,
+      "rms_dbfs": -21.0,
+      "peak_dbfs": -1.75,
+      "sources": [
+        "wooden_ship"
+      ],
+      "processing": "Foley gravado de colisão de navio de madeira; corte próximo ao impacto em 0.928s; high-pass 110Hz; ganho contido. Não contém subgrave sintetizado."
+    },
+    {
+      "role": "hook",
+      "path": "Eventos/Gancho_Corda_Arremesso_Real.wav",
+      "guid": "e827d7855b925ef6afe5005b8c262826",
+      "duration_seconds": 1.05,
+      "channels": 1,
+      "rms_dbfs": -24.0,
+      "peak_dbfs": -9.13,
+      "sources": [
+        "rope_swish",
+        "metal_clink"
+      ],
+      "processing": "Composição de whoosh de corda gravada + contato metálico gravado discreto aos 0.39s; sem síntese."
+    }
+  ],
+  "sources": [
+    {
+      "key": "metal_rain",
+      "title": "Gentle rain on metal roof",
+      "author": "wlabarron",
+      "id": "509113",
+      "source_url": "https://freesound.org/people/wlabarron/sounds/509113/",
+      "download_url": "https://cdn.freesound.org/previews/509/509113_3782735-hq.mp3",
+      "license": "CC0 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "raw_file": "sources/raw/metal_rain_509113.mp3",
+      "format_note": "Initial excerpt of public Freesound HQ MP3 preview; original not downloaded."
+    },
+    {
+      "key": "sand_steps",
+      "title": "Soft sand steps.wav",
+      "author": "200221-WeanBekker",
+      "id": "543714",
+      "source_url": "https://freesound.org/people/200221-WeanBekker/sounds/543714/",
+      "download_url": "https://cdn.freesound.org/previews/543/543714_11072224-hq.mp3",
+      "license": "CC0 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "raw_file": "sources/raw/sand_steps_543714.mp3",
+      "format_note": "Initial excerpt of public Freesound HQ MP3 preview; original not downloaded."
+    },
+    {
+      "key": "forest_rain",
+      "title": "ForestRainShower1a.mp3",
+      "author": "AlanCat",
+      "id": "383064",
+      "source_url": "https://freesound.org/people/AlanCat/sounds/383064/",
+      "download_url": "https://cdn.freesound.org/previews/383/383064_5486695-hq.mp3",
+      "license": "CC0 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "raw_file": "sources/raw/forest_rain_383064.mp3",
+      "format_note": "Initial excerpt of public Freesound HQ MP3 preview; original not downloaded."
+    },
+    {
+      "key": "sea_waves",
+      "title": "Big waves hit land.wav",
+      "author": "straget",
+      "id": "412308",
+      "source_url": "https://freesound.org/people/straget/sounds/412308/",
+      "download_url": "https://cdn.freesound.org/previews/412/412308_7707368-hq.mp3",
+      "license": "CC0 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "raw_file": "sources/raw/sea_waves_412308.mp3",
+      "format_note": "Initial excerpt of public Freesound HQ MP3 preview; original not downloaded."
+    },
+    {
+      "key": "tree_wind",
+      "title": "Wind Through Trees",
+      "author": "Yoyodaman234",
+      "id": "335889",
+      "source_url": "https://freesound.org/people/Yoyodaman234/sounds/335889/",
+      "download_url": "https://cdn.freesound.org/previews/335/335889_2792951-hq.mp3",
+      "license": "CC0 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "raw_file": "sources/raw/tree_wind_335889.mp3",
+      "format_note": "Initial excerpt of public Freesound HQ MP3 preview; original not downloaded."
+    },
+    {
+      "key": "grass_steps",
+      "title": "Footsteps_Grass_1.wav",
+      "author": "SilentStrikeZ",
+      "id": "389625",
+      "source_url": "https://freesound.org/people/SilentStrikeZ/sounds/389625/",
+      "download_url": "https://cdn.freesound.org/previews/389/389625_4103633-hq.mp3",
+      "license": "CC0 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "raw_file": "sources/raw/grass_steps_389625.mp3",
+      "format_note": "Initial excerpt of public Freesound HQ MP3 preview; original not downloaded."
+    },
+    {
+      "key": "wood_steps",
+      "title": "Footsteps on hollow wood",
+      "author": "florianreichelt",
+      "id": "459970",
+      "source_url": "https://freesound.org/people/florianreichelt/sounds/459970/",
+      "download_url": "https://cdn.freesound.org/previews/459/459970_6253486-hq.mp3",
+      "license": "CC0 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "raw_file": "sources/raw/wood_steps_459970.mp3",
+      "format_note": "Initial excerpt of public Freesound HQ MP3 preview; original not downloaded."
+    },
+    {
+      "key": "wooden_ship",
+      "title": "Wooden Ship Break",
+      "author": "Kodack",
+      "id": "257752",
+      "source_url": "https://freesound.org/people/Kodack/sounds/257752/",
+      "download_url": "https://cdn.freesound.org/previews/257/257752_2276808-hq.mp3",
+      "license": "CC0 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "raw_file": "sources/raw/wooden_ship_257752.mp3",
+      "format_note": "Initial excerpt of public Freesound HQ MP3 preview; original not downloaded."
+    },
+    {
+      "key": "rope_swish",
+      "title": "Whoosh_Rope.wav",
+      "author": "Nox_Sound",
+      "id": "473583",
+      "source_url": "https://freesound.org/people/Nox_Sound/sounds/473583/",
+      "download_url": "https://cdn.freesound.org/previews/473/473583_9250976-hq.mp3",
+      "license": "CC0 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "raw_file": "sources/raw/rope_swish_473583.mp3",
+      "format_note": "Initial excerpt of public Freesound HQ MP3 preview; original not downloaded."
+    },
+    {
+      "key": "metal_clink",
+      "title": "metal clink",
+      "author": "waheegle",
+      "id": "738634",
+      "source_url": "https://freesound.org/people/waheegle/sounds/738634/",
+      "download_url": "https://cdn.freesound.org/previews/738/738634_14861700-hq.mp3",
+      "license": "CC0 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "raw_file": "sources/raw/metal_clink_738634.mp3",
+      "format_note": "Initial excerpt of public Freesound HQ MP3 preview; original not downloaded."
+    }
+  ]
+}

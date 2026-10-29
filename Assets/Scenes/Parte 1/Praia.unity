@@ -119,6 +119,38 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &1325700
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1325701}
+  m_Layer: 0
+  m_Name: Audio_Praia
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1325701
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1325700}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1022464913}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1410419
 GameObject:
   m_ObjectHideFlags: 0
@@ -965,21 +997,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MecanicaEscalada
   idItemConsumido: gancho
---- !u!114 &1097743620
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 107660258}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21393d573f4342018a60aabc24fdefe5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TransicaoCena
-  nomeCenaDestino: "Ar\xE9a de Carga"
-  idEntradaDestino: Entrada_AreaCarga
-  fader: {fileID: 191067315}
 --- !u!65 &107660260
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1846,6 +1863,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemPickup
   item: {fileID: 11400000, guid: b7c2e3f4a5b647d8890c1e2f3a4b5c6d, type: 2}
+  quantidade: 1
   idManual: 
   nomeManual: Item
   larguraManual: 1
@@ -7443,7 +7461,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -2.8, y: 50, z: 0}
-  m_LocalScale: {x: 2.164373, y: 1.3395, z: 1}
+  m_LocalScale: {x: 2.164373, y: 2.679, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -11161,6 +11179,59 @@ Transform:
   m_Children: []
   m_Father: {fileID: 391425703}
   m_LocalEulerAnglesHint: {x: 0, y: -33, z: 0}
+--- !u!1 &1022464912
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1022464913}
+  - component: {fileID: 1022464914}
+  m_Layer: 0
+  m_Name: Cabana - chuva abafada
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1022464913
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1022464912}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.9930685, z: -0, w: -0.11753726}
+  m_LocalPosition: {x: -15.656319, y: 2.400005, z: 17.85021}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1325701}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1022464914
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1022464912}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Size: {x: 7.440003, y: 4.8, z: 11.2800045}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1035066448
 GameObject:
   m_ObjectHideFlags: 0
@@ -11601,6 +11672,23 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 11.388491}
   m_Center: {x: 0, y: 0, z: 5.6944866}
+--- !u!114 &1097743620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 107660258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21393d573f4342018a60aabc24fdefe5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TransicaoCena
+  nomeCenaDestino: "Ar\xE9a de Carga"
+  idEntradaDestino: Entrada_AreaCarga
+  fader: {fileID: 191067315}
+  somAoEscurecer: {fileID: 8300000, guid: e827d7855b925ef6afe5005b8c262826, type: 3}
+  volumeSomAoEscurecer: 0.35
 --- !u!1 &1099636028
 GameObject:
   m_ObjectHideFlags: 0
@@ -12319,6 +12407,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 086c4ff9b9125104caab9f88dde91107, type: 3}
+--- !u!4 &1239562754 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 086c4ff9b9125104caab9f88dde91107, type: 3}
+  m_PrefabInstance: {fileID: 1239562753}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1273490709
 GameObject:
   m_ObjectHideFlags: 0
@@ -18628,6 +18721,114 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 548129331806240157, guid: b1cdeb3c70a5b3143b5f5df3cd8b348c, type: 3}
+      propertyPath: ondasDoMar
+      value: 
+      objectReference: {fileID: 8300000, guid: 20a763bc211059729f01087d9c1b3c21, type: 3}
+    - target: {fileID: 548129331806240157, guid: b1cdeb3c70a5b3143b5f5df3cd8b348c, type: 3}
+      propertyPath: zonaCabana
+      value: 
+      objectReference: {fileID: 1022464914}
+    - target: {fileID: 548129331806240157, guid: b1cdeb3c70a5b3143b5f5df3cd8b348c, type: 3}
+      propertyPath: volumeNavio
+      value: 0.24
+      objectReference: {fileID: 0}
+    - target: {fileID: 548129331806240157, guid: b1cdeb3c70a5b3143b5f5df3cd8b348c, type: 3}
+      propertyPath: volumeOndas
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 548129331806240157, guid: b1cdeb3c70a5b3143b5f5df3cd8b348c, type: 3}
+      propertyPath: colisorCasco
+      value: 
+      objectReference: {fileID: 1511283584}
+    - target: {fileID: 548129331806240157, guid: b1cdeb3c70a5b3143b5f5df3cd8b348c, type: 3}
+      propertyPath: destrocosBote
+      value: 
+      objectReference: {fileID: 1239562754}
+    - target: {fileID: 548129331806240157, guid: b1cdeb3c70a5b3143b5f5df3cd8b348c, type: 3}
+      propertyPath: chuvaVentoPraia
+      value: 
+      objectReference: {fileID: 8300000, guid: 0b30a3395d955b1883cc6a73f8f1b8bf, type: 3}
+    - target: {fileID: 548129331806240157, guid: b1cdeb3c70a5b3143b5f5df3cd8b348c, type: 3}
+      propertyPath: ventoNasArvores
+      value: 
+      objectReference: {fileID: 8300000, guid: 9c63685d573251a3bdbec2a2ed87c66e, type: 3}
+    - target: {fileID: 548129331806240157, guid: b1cdeb3c70a5b3143b5f5df3cd8b348c, type: 3}
+      propertyPath: chuvaNoCascoEMar
+      value: 
+      objectReference: {fileID: 8300000, guid: 24f5ddeaeec051fc82e262a76d404af4, type: 3}
+    - target: {fileID: 548129331806240157, guid: b1cdeb3c70a5b3143b5f5df3cd8b348c, type: 3}
+      propertyPath: volumeChuvaVentoPraia
+      value: 0.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 548129331806240158, guid: b1cdeb3c70a5b3143b5f5df3cd8b348c, type: 3}
+      propertyPath: volumePulo
+      value: 0.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 548129331806240158, guid: b1cdeb3c70a5b3143b5f5df3cd8b348c, type: 3}
+      propertyPath: volumeCorda
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 548129331806240158, guid: b1cdeb3c70a5b3143b5f5df3cd8b348c, type: 3}
+      propertyPath: volumePassos
+      value: 0.22
+      objectReference: {fileID: 0}
+    - target: {fileID: 548129331806240158, guid: b1cdeb3c70a5b3143b5f5df3cd8b348c, type: 3}
+      propertyPath: volumeAterrissagem
+      value: 0.24
+      objectReference: {fileID: 0}
+    - target: {fileID: 548129331806240158, guid: b1cdeb3c70a5b3143b5f5df3cd8b348c, type: 3}
+      propertyPath: distanciaEntrePassos
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 548129331806240158, guid: b1cdeb3c70a5b3143b5f5df3cd8b348c, type: 3}
+      propertyPath: 'passosAreia.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 278c7cc5c2285ca68dd85f05e96e911c, type: 3}
+    - target: {fileID: 548129331806240158, guid: b1cdeb3c70a5b3143b5f5df3cd8b348c, type: 3}
+      propertyPath: 'passosAreia.Array.data[1]'
+      value: 
+      objectReference: {fileID: 8300000, guid: dcd155c63bd7589e9f905a1e983bd7b4, type: 3}
+    - target: {fileID: 548129331806240158, guid: b1cdeb3c70a5b3143b5f5df3cd8b348c, type: 3}
+      propertyPath: 'passosAreia.Array.data[2]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 38ba05e3ab735e10988b9ad8ea077938, type: 3}
+    - target: {fileID: 548129331806240158, guid: b1cdeb3c70a5b3143b5f5df3cd8b348c, type: 3}
+      propertyPath: 'passosAreia.Array.data[3]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 979e573fcc6f52ea93c282075b9996bd, type: 3}
+    - target: {fileID: 548129331806240158, guid: b1cdeb3c70a5b3143b5f5df3cd8b348c, type: 3}
+      propertyPath: 'passosMadeira.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 423cebfa1bfa5cd299019a2334b2a5a4, type: 3}
+    - target: {fileID: 548129331806240158, guid: b1cdeb3c70a5b3143b5f5df3cd8b348c, type: 3}
+      propertyPath: 'passosMadeira.Array.data[1]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 2b6a50abf6175906829747cb1c475fc2, type: 3}
+    - target: {fileID: 548129331806240158, guid: b1cdeb3c70a5b3143b5f5df3cd8b348c, type: 3}
+      propertyPath: 'passosMadeira.Array.data[2]'
+      value: 
+      objectReference: {fileID: 8300000, guid: d400e7df59ec5dceb4e3c4803babc10b, type: 3}
+    - target: {fileID: 548129331806240158, guid: b1cdeb3c70a5b3143b5f5df3cd8b348c, type: 3}
+      propertyPath: 'passosMadeira.Array.data[3]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 3967034a32195810b42728e5ca5c6eb8, type: 3}
+    - target: {fileID: 548129331806240158, guid: b1cdeb3c70a5b3143b5f5df3cd8b348c, type: 3}
+      propertyPath: 'passosTerraGrama.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: f1c2528d26bc5d0ea9914e024503b036, type: 3}
+    - target: {fileID: 548129331806240158, guid: b1cdeb3c70a5b3143b5f5df3cd8b348c, type: 3}
+      propertyPath: 'passosTerraGrama.Array.data[1]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 3328c95e30ab58208f5d2d2740746326, type: 3}
+    - target: {fileID: 548129331806240158, guid: b1cdeb3c70a5b3143b5f5df3cd8b348c, type: 3}
+      propertyPath: 'passosTerraGrama.Array.data[2]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 65660e0df2fc573e99761527ba24f96d, type: 3}
+    - target: {fileID: 548129331806240158, guid: b1cdeb3c70a5b3143b5f5df3cd8b348c, type: 3}
+      propertyPath: 'passosTerraGrama.Array.data[3]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 4f748c5519e75ea2a822e9732116ac3d, type: 3}
     - target: {fileID: 3598036984256896562, guid: b1cdeb3c70a5b3143b5f5df3cd8b348c, type: 3}
       propertyPath: componenteTexto
       value: 
@@ -18722,6 +18923,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1810361514}
     - target: {fileID: 5596990375660302090, guid: fe9b368dd727bb64fbb37bdf2d9856d0, type: 3}
+      propertyPath: audioQuedaBote
+      value: 
+      objectReference: {fileID: 8300000, guid: aae6e85e3e2f52668bb7fe090f147682, type: 3}
+    - target: {fileID: 5596990375660302090, guid: fe9b368dd727bb64fbb37bdf2d9856d0, type: 3}
       propertyPath: ganchoEscalada
       value: 
       objectReference: {fileID: 208698416}
@@ -18808,3 +19013,4 @@ SceneRoots:
   - {fileID: 1432353263}
   - {fileID: 961217913}
   - {fileID: 1592337160}
+  - {fileID: 1325701}

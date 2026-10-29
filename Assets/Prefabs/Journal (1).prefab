@@ -93,6 +93,7 @@ MonoBehaviour:
   boteDestruido: {fileID: 0}
   ganchoEscalada: {fileID: 0}
   somImpacto: {fileID: 0}
+  audioQuedaBote: {fileID: 8300000, guid: 5450014590135954a2dd631ae0ca4945, type: 3}
 --- !u!65 &7998256818112182176
 BoxCollider:
   m_ObjectHideFlags: 0
